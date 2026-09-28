@@ -1,0 +1,22 @@
+SERGIO VALENTE — CATALOGUE PRODUITS
+
+Pour ajouter une création :
+1. Placez sa photo dans :
+   produits/bracelets/
+   produits/colliers/
+   produits/pierres/
+
+2. Ouvrez :
+   js/products.js
+
+3. Copiez un bloc existant et changez :
+   - id
+   - category
+   - image
+   - noms dans les 6 langues
+   - descriptions dans les 6 langues
+
+4. Enregistrez et rechargez le site avec Live Server.
+
+Ne modifiez pas .idea.
+Le dossier images/ original est conservé comme sauvegarde.
