@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -16861,6 +16862,17 @@
       document.querySelectorAll(".creation-slot")
     );
 
+    /*
+       IMPORTANT :
+       On cache immédiatement toutes les cases pendant la vérification.
+       Ainsi, aucune case vide ne peut apparaître brièvement au chargement.
+       Une création n'est affichée que si sa photo principale existe.
+    */
+    slots.forEach(function(card) {
+      card.hidden = true;
+      card.classList.add("creation-unavailable");
+    });
+
     await Promise.all(
       slots.map(function(card) {
         return checkImageExists(card.dataset.image).then(function(exists) {
@@ -18485,5 +18497,3 @@ document.body.classList.remove("lightbox-open");
 </script>
 </body>
 </html>
-```
-````
