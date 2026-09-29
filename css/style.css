@@ -1,5 +1,4 @@
-````
-```
+
 
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -2033,3 +2032,674 @@ footer {
 }
 
 ````
+/* =========================================================
+   SERGIO VALENTE — CLIENT MAQUETTE
+   FINAL VISUAL LAYER
+   HÉRO INTENTIONALLY UNTOUCHED
+   ========================================================= */
+
+:root{
+  --sv-client-dark:#1d0e08;
+  --sv-client-dark-2:#2a140b;
+  --sv-client-brown:#3a1a0d;
+  --sv-client-copper:#c27b4c;
+  --sv-client-copper-light:#e1aa7d;
+  --sv-client-cream:#f4e8dc;
+  --sv-client-text:#d7bbaa;
+}
+
+/* COLLECTIONS — client presentation */
+
+.collections-section{
+  position:relative !important;
+  width:100% !important;
+  padding:125px 4vw 145px !important;
+  background:
+    radial-gradient(
+      ellipse at 50% 0%,
+      rgba(194,123,76,.18) 0%,
+      rgba(194,123,76,.05) 28%,
+      transparent 52%
+    ),
+    linear-gradient(
+      180deg,
+      #2b150c 0%,
+      #1d0e08 100%
+    ) !important;
+  overflow:hidden !important;
+}
+
+.collections-section::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(
+      ellipse at 8% 85%,
+      rgba(194,123,76,.09),
+      transparent 18%
+    ),
+    radial-gradient(
+      ellipse at 92% 85%,
+      rgba(194,123,76,.09),
+      transparent 18%
+    );
+}
+
+.collections-section::after{
+  content:"";
+  position:absolute;
+  top:72px;
+  left:50%;
+  width:170px;
+  height:1px;
+  transform:translateX(-50%);
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(225,170,125,.7),
+      transparent
+    );
+  pointer-events:none;
+}
+
+/* Heading */
+
+.collections-section .section-heading{
+  position:relative;
+  z-index:5;
+  width:100%;
+  max-width:1100px !important;
+  margin:0 auto 55px !important;
+  text-align:center !important;
+}
+
+.collections-section .section-eyebrow{
+  display:block;
+  margin-bottom:16px !important;
+  color:var(--sv-client-copper-light) !important;
+  font-family:Arial,Helvetica,sans-serif !important;
+  font-size:.62rem !important;
+  font-weight:700 !important;
+  letter-spacing:.34em !important;
+  text-transform:uppercase !important;
+}
+
+.collections-section .section-heading h2{
+  margin:0 !important;
+  color:var(--sv-client-cream) !important;
+  font-family:Georgia,"Times New Roman",serif !important;
+  font-size:clamp(3rem,5.5vw,5.3rem) !important;
+  font-weight:400 !important;
+  line-height:1 !important;
+  letter-spacing:.035em !important;
+  text-transform:uppercase !important;
+}
+
+.collections-section .section-heading p{
+  max-width:760px !important;
+  margin:20px auto 0 !important;
+  color:var(--sv-client-text) !important;
+  font-family:Georgia,"Times New Roman",serif !important;
+  font-size:clamp(.85rem,1.3vw,1.05rem) !important;
+  line-height:1.7 !important;
+  letter-spacing:.18em !important;
+  text-transform:uppercase !important;
+}
+
+/* Four client collection cards */
+
+.client-collections-showcase{
+  position:relative !important;
+  z-index:5;
+  width:min(1455px,94vw) !important;
+  margin:0 auto !important;
+  display:grid !important;
+  grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+  gap:24px !important;
+}
+
+.client-collection-card{
+  position:relative !important;
+  display:block !important;
+  width:100% !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:1px solid rgba(225,170,125,.72) !important;
+  border-radius:0 !important;
+  outline:none !important;
+  overflow:hidden !important;
+  background:#241108 !important;
+  color:var(--sv-client-cream) !important;
+  cursor:pointer !important;
+  appearance:none !important;
+  -webkit-appearance:none !important;
+  box-shadow:0 16px 38px rgba(0,0,0,.30) !important;
+  transition:
+    transform .4s ease,
+    border-color .4s ease,
+    box-shadow .4s ease !important;
+}
+
+.client-collection-card:hover{
+  transform:translateY(-7px) !important;
+  border-color:var(--sv-client-copper-light) !important;
+  box-shadow:0 28px 65px rgba(0,0,0,.48) !important;
+}
+
+.client-collection-card:focus-visible{
+  outline:2px solid var(--sv-client-copper-light) !important;
+  outline-offset:4px !important;
+}
+
+.client-collection-image{
+  position:relative !important;
+  width:100% !important;
+  aspect-ratio:1 / 1.10 !important;
+  overflow:hidden !important;
+  background:#100805 !important;
+}
+
+.client-collection-image img{
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  max-width:none !important;
+  object-fit:cover !important;
+  object-position:center !important;
+  background:#100805 !important;
+  transition:
+    transform .7s cubic-bezier(.2,.7,.2,1),
+    filter .45s ease !important;
+}
+
+.client-collection-card:hover .client-collection-image img{
+  transform:scale(1.045) !important;
+  filter:brightness(1.05) !important;
+}
+
+.client-collection-image::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(
+      180deg,
+      transparent 55%,
+      rgba(20,7,3,.22) 100%
+    );
+}
+
+.client-collection-title{
+  position:relative !important;
+  z-index:2;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:100% !important;
+  min-height:74px !important;
+  padding:15px 10px !important;
+  border-top:1px solid rgba(225,170,125,.55) !important;
+  background:
+    linear-gradient(
+      180deg,
+      #35180b 0%,
+      #241006 100%
+    ) !important;
+  color:#f5e9df !important;
+  font-family:Georgia,"Times New Roman",serif !important;
+  font-size:clamp(.85rem,1.35vw,1.18rem) !important;
+  font-weight:400 !important;
+  line-height:1.2 !important;
+  letter-spacing:.13em !important;
+  text-align:center !important;
+  text-transform:uppercase !important;
+}
+
+/* Client button */
+
+.client-collections-button{
+  position:relative !important;
+  z-index:5;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:18px !important;
+  width:min(510px,90vw) !important;
+  min-height:72px !important;
+  margin:48px auto 0 !important;
+  padding:15px 28px !important;
+  border:1px solid rgba(225,170,125,.82) !important;
+  border-radius:0 !important;
+  outline:none !important;
+  background:
+    linear-gradient(
+      180deg,
+      #54230f 0%,
+      #3b1709 100%
+    ) !important;
+  color:#f7e9dd !important;
+  font-family:Georgia,"Times New Roman",serif !important;
+  font-size:clamp(.85rem,1.4vw,1.05rem) !important;
+  font-weight:400 !important;
+  letter-spacing:.15em !important;
+  text-align:center !important;
+  cursor:pointer !important;
+  box-shadow:0 14px 35px rgba(0,0,0,.25) !important;
+  transition:
+    transform .3s ease,
+    background .3s ease,
+    box-shadow .3s ease !important;
+}
+
+.client-collections-button span{
+  display:inline-block !important;
+  font-size:1.35em !important;
+  line-height:1 !important;
+  transition:transform .3s ease !important;
+}
+
+.client-collections-button:hover{
+  transform:translateY(-3px) !important;
+  background:
+    linear-gradient(
+      180deg,
+      #6b2c13 0%,
+      #491c0b 100%
+    ) !important;
+  box-shadow:0 22px 48px rgba(0,0,0,.38) !important;
+}
+
+.client-collections-button:hover span{
+  transform:translateX(7px) !important;
+}
+
+.client-collections-button:focus-visible{
+  outline:2px solid var(--sv-client-copper-light) !important;
+  outline-offset:4px !important;
+}
+
+/* Existing creations hidden until client button is used */
+
+.collections-section:not(.client-collections-open) .collection-filters{
+  display:none !important;
+}
+
+.collections-section:not(.client-collections-open) .collection-grid{
+  display:none !important;
+}
+
+/* Existing creations after opening */
+
+.collections-section.client-collections-open .collection-filters{
+  position:relative !important;
+  display:flex !important;
+  margin-top:75px !important;
+}
+
+.collections-section.client-collections-open .collection-grid{
+  display:grid !important;
+}
+
+.collections-section.client-collections-open .collection-filters::before{
+  content:"";
+  position:absolute;
+  top:-38px;
+  left:50%;
+  width:90px;
+  height:1px;
+  transform:translateX(-50%);
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--sv-client-copper-light),
+      transparent
+    );
+}
+
+/* Existing filters */
+
+.collections-section .collection-filters{
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+}
+
+.collections-section .collection-filter{
+  border-radius:0 !important;
+  background:rgba(255,255,255,.025) !important;
+  border:1px solid rgba(225,170,125,.30) !important;
+  color:#d2b8a7 !important;
+}
+
+.collections-section .collection-filter:hover{
+  background:rgba(225,170,125,.09) !important;
+  border-color:rgba(225,170,125,.60) !important;
+  color:#fff !important;
+}
+
+.collections-section .collection-filter.active{
+  background:var(--sv-client-copper-light) !important;
+  border-color:var(--sv-client-copper-light) !important;
+  color:#281108 !important;
+}
+
+/* Existing creation cards */
+
+.collections-section .collection-card{
+  border-radius:0 !important;
+  border-color:rgba(225,170,125,.18) !important;
+}
+
+.collections-section .collection-card:hover{
+  border-color:rgba(225,170,125,.48) !important;
+}
+
+/* Following sections */
+
+.about-section,
+.contact-section{
+  background:
+    linear-gradient(
+      180deg,
+      #1d0e08 0%,
+      #29140b 100%
+    ) !important;
+}
+
+.about-section h2,
+.contact-section h2{
+  color:var(--sv-client-cream) !important;
+}
+
+.about-section p,
+.contact-section p{
+  color:var(--sv-client-text) !important;
+}
+
+.site-footer,
+footer{
+  background:#110805 !important;
+  border-top:1px solid rgba(225,170,125,.16) !important;
+}
+
+/* Tablet */
+
+@media (max-width:1050px){
+
+  .client-collections-showcase{
+    width:min(900px,92vw) !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:22px !important;
+  }
+
+  .client-collection-image{
+    aspect-ratio:1 / 1.02 !important;
+  }
+}
+
+/* Mobile */
+
+@media (max-width:650px){
+
+  .collections-section{
+    padding:100px 5vw 110px !important;
+  }
+
+  .collections-section .section-heading{
+    margin-bottom:45px !important;
+  }
+
+  .collections-section .section-heading h2{
+    font-size:clamp(2.5rem,12vw,4rem) !important;
+    letter-spacing:.025em !important;
+  }
+
+  .collections-section .section-heading p{
+    font-size:.76rem !important;
+    line-height:1.7 !important;
+    letter-spacing:.10em !important;
+  }
+
+  .client-collections-showcase{
+    width:min(440px,90vw) !important;
+    grid-template-columns:1fr !important;
+    gap:18px !important;
+  }
+
+  .client-collection-image{
+    aspect-ratio:1 / .78 !important;
+  }
+
+  .client-collection-title{
+    min-height:64px !important;
+    font-size:.88rem !important;
+    letter-spacing:.13em !important;
+  }
+
+  .client-collections-button{
+    width:min(390px,88vw) !important;
+    min-height:64px !important;
+    margin-top:34px !important;
+    padding:14px 22px !important;
+    font-size:.86rem !important;
+  }
+}
+
+/* Very small screens */
+
+@media (max-width:400px){
+
+  .client-collections-showcase{
+    width:92vw !important;
+  }
+
+  .client-collection-title{
+    min-height:60px !important;
+    font-size:.80rem !important;
+  }
+}
+
+
+/* =========================================================
+   COLLECTIONS — VERSION FINALE : IMAGE VISIBLE, SANS BOUTONS
+   ========================================================= */
+.collections-section{
+  position:relative !important;
+  min-height:760px !important;
+  padding:120px 4vw 140px !important;
+  background-image:var(--sv-real-background) !important;
+  background-color:transparent !important;
+  background-repeat:no-repeat !important;
+  background-size:cover !important;
+  background-position:center center !important;
+  background-attachment:scroll !important;
+  overflow:hidden !important;
+}
+
+.collections-section::before,
+.collections-section::after{
+  display:none !important;
+  content:none !important;
+}
+
+.collections-section .section-heading{
+  position:relative !important;
+  z-index:2 !important;
+  margin:0 auto 52px !important;
+}
+
+.collections-section .section-eyebrow,
+.collections-section .section-heading h2,
+.collections-section .section-heading p{
+  text-shadow:0 2px 10px rgba(0,0,0,.55) !important;
+}
+
+.collections-section .section-eyebrow{
+  color:#fff5ec !important;
+}
+
+.collections-section .section-heading h2{
+  color:#fff8f2 !important;
+}
+
+.collections-section .section-heading p{
+  color:#fff3ea !important;
+  letter-spacing:.10em !important;
+}
+
+/* Les filtres et le bouton d'appel à l'action disparaissent complètement. */
+.collections-section .collection-filters,
+.collections-section .collection-grid,
+.client-collections-button{
+  display:none !important;
+}
+
+/* Les quatre visuels restent des cartes visuelles, pas des boutons. */
+.client-collections-showcase{
+  position:relative !important;
+  z-index:2 !important;
+  display:grid !important;
+  grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+  gap:22px !important;
+  width:min(1455px,94vw) !important;
+  margin:0 auto !important;
+}
+
+.client-collection-card{
+  cursor:default !important;
+  border:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  transform:none !important;
+  overflow:hidden !important;
+}
+
+.client-collection-card:hover{
+  transform:none !important;
+  border:0 !important;
+  box-shadow:none !important;
+}
+
+.client-collection-image{
+  aspect-ratio:1 / 1.08 !important;
+  border:1px solid rgba(255,245,236,.65) !important;
+  background:transparent !important;
+  box-shadow:0 14px 35px rgba(0,0,0,.25) !important;
+}
+
+.client-collection-title{
+  min-height:auto !important;
+  margin-top:12px !important;
+  padding:8px 4px !important;
+  border:0 !important;
+  background:transparent !important;
+  color:#fff8f2 !important;
+  text-shadow:0 2px 8px rgba(0,0,0,.65) !important;
+}
+
+@media(max-width:900px){
+  .client-collections-showcase{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+
+@media(max-width:560px){
+  .collections-section{
+    min-height:680px !important;
+    padding:90px 5vw 100px !important;
+  }
+  .client-collections-showcase{
+    grid-template-columns:1fr !important;
+    width:min(520px,92vw) !important;
+  }
+}
+
+
+/* =========================================================
+   COLLECTIONS — CORRECTION FINALE DEMANDEE
+   ========================================================= */
+.collections-section{
+  background-image:linear-gradient(rgba(255,255,255,.14),rgba(255,255,255,.14)),var(--sv-real-background) !important;
+  background-color:transparent !important;
+  background-blend-mode:screen !important;
+  background-size:cover !important;
+  background-position:center center !important;
+}
+.collections-section .section-eyebrow{display:none !important;}
+.collections-section .collection-filters,
+.collections-section .collection-grid,
+.collections-section .client-collections-button{display:none !important;}
+.collections-section .client-collections-showcase{
+  display:grid !important;
+  grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+  gap:22px !important;
+  width:min(1455px,94vw) !important;
+  margin:0 auto !important;
+}
+.collections-section .client-collection-card{
+  border:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+.collections-section .client-collection-image{
+  border:0 !important;
+  box-shadow:none !important;
+  background:transparent !important;
+}
+.collections-section .client-collection-title{
+  border:0 !important;
+  background:transparent !important;
+  color:#fff8f2 !important;
+}
+@media(max-width:1100px){.collections-section .client-collections-showcase{grid-template-columns:repeat(3,minmax(0,1fr)) !important;}}
+@media(max-width:700px){.collections-section .client-collections-showcase{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}}
+@media(max-width:560px){.collections-section .client-collections-showcase{grid-template-columns:1fr !important;}}
+
+
+/* Category cards open the corresponding creations directly. */
+.client-collection-card[data-client-filter]{
+  cursor:pointer !important;
+}
+.collections-section.client-collections-open .collection-filters{
+  display:none !important;
+}
+.collections-section.client-collections-open .collection-grid{
+  display:grid !important;
+  margin-top:60px !important;
+}
+
+
+/* =========================================================
+   FINAL COLLECTIONS CLEANUP
+   - No decorative background image in the collections section
+   - Keep the keychain category image independent from file-path issues
+   ========================================================= */
+.collections-section,
+.collections-section::before,
+.collections-section::after{
+  background-image:none !important;
+}
+.collections-section{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-blend-mode:normal !important;
+}
+.collections-section::before,
+.collections-section::after{
+  display:none !important;
+  content:none !important;
+}
+.collections-section .client-collection-image{
+  overflow:hidden !important;
+}
+.collections-section .client-collection-image img{
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+}
