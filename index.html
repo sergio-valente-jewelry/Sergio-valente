@@ -14051,6 +14051,77 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
     }
 </style>
 
+
+<style id="sv-phone-auto-final">
+    /* TÉLÉPHONE UNIQUEMENT — toutes les créations présentes et futures */
+    @media (max-width:700px){
+      .collection-card.creation-slot,
+      .collection-card.creation-slot .collection-image{
+        height:auto !important;
+        min-height:0 !important;
+        max-height:none !important;
+        overflow:visible !important;
+      }
+
+      .collection-card.creation-slot .collection-image img{
+        display:block !important;
+        width:100% !important;
+        height:auto !important;
+        min-height:0 !important;
+        max-height:none !important;
+        object-fit:contain !important;
+      }
+    }
+</style>
+
+
+<style id="sv-hero-telephone-sans-espace">
+    /* =========================================================
+       HERO — TÉLÉPHONE UNIQUEMENT
+       Le PC reste totalement inchangé.
+       ========================================================= */
+    @media (max-width:700px){
+
+      .hero{
+        height:auto !important;
+        min-height:0 !important;
+        max-height:none !important;
+        overflow:hidden !important;
+        display:block !important;
+        position:relative !important;
+        background:transparent !important;
+      }
+
+      .hero-image{
+        position:relative !important;
+        inset:auto !important;
+        display:block !important;
+        width:100% !important;
+        height:auto !important;
+        min-height:0 !important;
+        max-height:none !important;
+        object-fit:contain !important;
+        object-position:center top !important;
+        margin:0 !important;
+      }
+
+      .hero-content{
+        position:absolute !important;
+        z-index:3 !important;
+        left:0 !important;
+        right:0 !important;
+        bottom:0 !important;
+        width:100% !important;
+        max-width:100% !important;
+        box-sizing:border-box !important;
+        margin:0 !important;
+        padding:0 18px 24px !important;
+        text-align:center !important;
+        background:transparent !important;
+      }
+    }
+</style>
+
 </body>
 </html>
 ```
