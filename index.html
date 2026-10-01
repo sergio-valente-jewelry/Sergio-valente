@@ -14181,6 +14181,7 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
         display:block !important;
         width:100% !important;
         height:auto !important;
+        aspect-ratio:1 / 1.02 !important;
         min-height:0 !important;
         max-height:none !important;
         overflow:hidden !important;
@@ -14192,10 +14193,10 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
         inset:auto !important;
         display:block !important;
         width:100% !important;
-        height:auto !important;
+        height:100% !important;
         min-height:0 !important;
         max-height:none !important;
-        object-fit:contain !important;
+        object-fit:cover !important;
         object-position:center center !important;
         transform:none !important;
       }
@@ -14206,7 +14207,7 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
         position:absolute !important;
         left:50% !important;
         right:auto !important;
-        bottom:4% !important;
+        bottom:7% !important;
         transform:translateX(-50%) !important;
         width:94% !important;
         max-width:94% !important;
@@ -14260,6 +14261,25 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
       .hero-description{
         font-size:clamp(11px,3.45vw,15px) !important;
         max-width:94% !important;
+      }
+    }
+</style>
+
+<style id="sv-phone-wood-background-fix">
+    /* TÉLÉPHONE UNIQUEMENT — fond bois net comme sur PC.
+       Le PC (plus de 800px) n'est pas touché. */
+    @media (max-width:800px){
+      body{
+        background-image:none !important;
+        background-color:#b77b4f !important;
+      }
+      body::before{
+        content:"";
+        position:fixed;
+        top:0; left:0; right:0; bottom:0;
+        z-index:-1;
+        pointer-events:none;
+        background:var(--sv-real-background) center center / cover no-repeat;
       }
     }
 </style>
