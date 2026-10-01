@@ -3700,13 +3700,209 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
           text-align: left !important;
         }
     </style>
+
+    <style id="sv-phone-final-v2">
+        /* V2 TELEPHONE : image HERO plus haute dans le cadre, textes blancs conservés en bas. */
+        @media (max-width:700px){
+          .hero-image{
+            object-position:center 28% !important;
+          }
+
+          /* Chaque photo de création ocupa apenas a sua altura natural. */
+          .collection-card.creation-slot .collection-image,
+          .collection-card.creation-slot .collection-image img{
+            position:relative !important;
+            flex:0 0 auto !important;
+            aspect-ratio:auto !important;
+          }
+
+          .collection-card.creation-slot .collection-image{
+            height:auto !important;
+            min-height:0 !important;
+            max-height:none !important;
+            overflow:visible !important;
+          }
+
+          .collection-card.creation-slot .collection-image img{
+            display:block !important;
+            width:100% !important;
+            height:auto !important;
+            min-height:0 !important;
+            max-height:none !important;
+            object-fit:contain !important;
+            object-position:center center !important;
+            margin:0 !important;
+          }
+
+          /* O texto vem SEMPRE depois da foto, nunca por cima dela. */
+          .collection-card.creation-slot .collection-card-details,
+          .collection-card.creation-slot .creation-card-details{
+            position:static !important;
+            clear:both !important;
+            flex:0 0 auto !important;
+            height:auto !important;
+            min-height:0 !important;
+            max-height:none !important;
+            overflow:visible !important;
+            margin:10px 0 0 !important;
+            padding:4px 14px 16px !important;
+          }
+
+          .collection-card.creation-slot .creation-card-detail-line{
+            position:static !important;
+            display:block !important;
+            height:auto !important;
+            max-height:none !important;
+            overflow:visible !important;
+            margin:0 0 6px !important;
+          }
+        }
+    </style>
+
+
+    <style id="sv-final-mobile-fix-v3">
+        /* V3 MOBILE — Hero natural + photos natural + text never covered. PC unchanged. */
+        @media (max-width:700px){
+          /* HERO: keep the complete original image; no fixed 390px crop. */
+          .hero{
+            position:relative !important;
+            display:block !important;
+            height:auto !important;
+            min-height:0 !important;
+            max-height:none !important;
+            overflow:visible !important;
+          }
+          .hero-image{
+            position:relative !important;
+            inset:auto !important;
+            display:block !important;
+            width:100% !important;
+            height:auto !important;
+            min-height:0 !important;
+            max-height:none !important;
+            object-fit:contain !important;
+            object-position:center center !important;
+            transform:none !important;
+          }
+          /* White Hero text remains at the bottom, but no longer forces a crop. */
+          .hero-content{
+            position:relative !important;
+            left:auto !important;
+            right:auto !important;
+            bottom:auto !important;
+            transform:none !important;
+            width:100% !important;
+            max-width:100% !important;
+            margin:-78px auto 0 !important;
+            padding:0 16px 24px !important;
+            z-index:3 !important;
+            text-align:center !important;
+            background:transparent !important;
+          }
+          .hero-kicker,
+          .hero-html-line,
+          .hero-description{
+            position:relative !important;
+            z-index:4 !important;
+            max-width:100% !important;
+            white-space:normal !important;
+            overflow:visible !important;
+          }
+
+          /* COLLECTION PHOTOS: natural height, never overlap the text below. */
+          .collection-card.creation-slot,
+          .collection-card.creation-slot .collection-image,
+          .collection-card.creation-slot .collection-info,
+          .collection-card.creation-slot .creation-card-details{
+            position:static !important;
+            height:auto !important;
+            min-height:0 !important;
+            max-height:none !important;
+            overflow:visible !important;
+          }
+          .collection-card.creation-slot{
+            display:flex !important;
+            flex-direction:column !important;
+            width:100% !important;
+          }
+          .collection-card.creation-slot .collection-image{
+            order:2 !important;
+            width:100% !important;
+            margin:0 !important;
+            padding:0 !important;
+          }
+          .collection-card.creation-slot .collection-image img,
+          .collection-card .collection-image img,
+          .collection-grid .collection-image img{
+            position:static !important;
+            display:block !important;
+            width:100% !important;
+            height:auto !important;
+            min-height:0 !important;
+            max-height:none !important;
+            object-fit:contain !important;
+            object-position:center center !important;
+            margin:0 !important;
+          }
+          .collection-card.creation-slot .collection-info{
+            order:1 !important;
+          }
+          .collection-card.creation-slot .creation-card-details,
+          .collection-card.creation-slot:not(.creation-open) .creation-card-details{
+            order:3 !important;
+            display:block !important;
+            visibility:visible !important;
+            opacity:1 !important;
+            width:100% !important;
+            margin:10px 0 0 !important;
+            padding:4px 14px 16px !important;
+            box-sizing:border-box !important;
+            white-space:pre-line !important;
+            overflow:visible !important;
+          }
+          .collection-card.creation-slot .creation-card-detail-line{
+            display:block !important;
+            position:static !important;
+            height:auto !important;
+            max-height:none !important;
+            overflow:visible !important;
+            white-space:pre-line !important;
+            margin:0 0 7px !important;
+          }
+        }
+    </style>
+    <script id="sv-final-mobile-music-v3">
+        (function(){
+          function startMusic(){
+            var audio=document.getElementById('svAmbientMusic');
+            if(!audio) return;
+            try{
+              audio.autoplay=true;
+              audio.playsInline=true;
+              audio.muted=false;
+              if(audio.volume<=0) audio.volume=0.12;
+              var p=audio.play();
+              if(p && p.catch) p.catch(function(){});
+            }catch(e){}
+          }
+          if(document.readyState==='loading'){
+            document.addEventListener('DOMContentLoaded',startMusic,{once:true});
+          }else{ startMusic(); }
+          window.addEventListener('load',startMusic,{once:true});
+          window.addEventListener('pageshow',startMusic);
+          ['pointerdown','touchstart','click','keydown'].forEach(function(ev){
+            document.addEventListener(ev,startMusic,{once:true,passive:true});
+          });
+        })();
+    </script>
+
 </head>
 <body>
 <div aria-label="Contrôle de la musique" class="sv-music-control">
     <button aria-label="Activer ou couper la musique" id="svMusicToggle" title="Muet / Son" type="button">🔊</button>
     <input aria-label="Volume de la musique" class="sv-music-volume" id="svMusicVolume" max="100" min="0" title="Volume" type="range" value="12"/>
 </div>
-<audio id="svAmbientMusic" loop="" preload="auto" src="audio/sergio-valente.mp3"></audio>
+<audio id="svAmbientMusic" autoplay="autoplay" loop="" preload="auto" playsinline="playsinline" src="audio/sergio-valente.mp3"></audio>
 <header class="site-header">
     <div class="header-inner">
         <a class="brand" href="#accueil">
@@ -13614,6 +13810,246 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
       else init();
     })();
 </script>
+
+
+<style id="sv-correction-telephone-seulement">
+    /* =========================================================
+       CORRECTIONS TÉLÉPHONE UNIQUEMENT
+       RIEN ICI NE MODIFIE LE PC / TABLETTE
+       ========================================================= */
+    @media (max-width: 700px) {
+
+      /* HERO : image et lettres rouges sans découpe */
+      .hero {
+        position: relative !important;
+        width: 100% !important;
+        height: clamp(500px, 76svh, 650px) !important;
+        min-height: 500px !important;
+        max-height: none !important;
+        overflow: hidden !important;
+        display: flex !important;
+        align-items: flex-end !important;
+      }
+
+      .hero-image {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        object-fit: contain !important;
+        object-position: center center !important;
+        background: transparent !important;
+      }
+
+      .hero-content {
+        position: relative !important;
+        z-index: 2 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        margin: 0 auto !important;
+        padding: 0 18px 28px !important;
+        text-align: center !important;
+      }
+
+      .hero-kicker,
+      .hero-html-line,
+      .hero-description {
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+      }
+
+      .hero-kicker {
+        margin: 0 0 9px !important;
+        font-size: clamp(22px, 6vw, 32px) !important;
+        line-height: 1.15 !important;
+        letter-spacing: .11em !important;
+      }
+
+      .hero-html-line {
+        margin: 0 !important;
+        font-size: clamp(12px, 3.7vw, 17px) !important;
+        line-height: 1.45 !important;
+        letter-spacing: .05em !important;
+      }
+
+      .hero-description {
+        max-width: 360px !important;
+        margin: 10px auto 0 !important;
+        font-size: clamp(14px, 4vw, 18px) !important;
+        line-height: 1.48 !important;
+      }
+
+      /* CRÉATIONS : photo puis informations, sans recouvrement */
+      .collection-card.creation-slot {
+        display: flex !important;
+        flex-direction: column !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+      }
+
+      .collection-card.creation-slot .collection-image,
+      .collection-card.creation-slot .collection-image img {
+        position: relative !important;
+        overflow: visible !important;
+      }
+
+      .collection-card.creation-slot .collection-image {
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      .collection-card.creation-slot .collection-image img {
+        display: block !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        object-fit: contain !important;
+      }
+
+      .collection-card.creation-slot .creation-card-details {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: static !important;
+        order: 3 !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+        box-sizing: border-box !important;
+        margin: 10px auto 0 !important;
+        padding: 4px 16px 18px !important;
+        color: #fff7ec !important;
+        text-align: center !important;
+        font-family: Georgia, "Times New Roman", serif !important;
+        font-size: 18px !important;
+        line-height: 1.75 !important;
+        white-space: normal !important;
+        overflow-wrap: anywhere !important;
+      }
+
+      .collection-card.creation-slot .creation-card-detail-line {
+        display: block !important;
+        position: static !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+        margin: 0 0 7px !important;
+        padding: 0 !important;
+        white-space: pre-line !important;
+      }
+
+      .collection-card.creation-slot .creation-card-whatsapp {
+        position: static !important;
+        display: inline-flex !important;
+        margin: 7px auto 18px !important;
+        max-width: calc(100% - 36px) !important;
+        box-sizing: border-box !important;
+      }
+
+      /* PORTE-CLÉS : hauteur automatique UNIQUEMENT sur téléphone */
+      .collection-card.creation-slot[data-category="porta-chaves"],
+      .collection-card.creation-slot[data-creation-category="porta-chaves"],
+      .collection-card.creation-slot[data-category="porta-chaves"] .collection-image,
+      .collection-card.creation-slot[data-creation-category="porta-chaves"] .collection-image {
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+        aspect-ratio: auto !important;
+      }
+
+      .collection-card.creation-slot[data-category="porta-chaves"] .collection-image img,
+      .collection-card.creation-slot[data-creation-category="porta-chaves"] .collection-image img {
+        display: block !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        object-fit: contain !important;
+        object-position: center center !important;
+      }
+    }
+
+    /* Petit téléphone : toujours téléphone uniquement */
+    @media (max-width: 380px) {
+      .hero {
+        height: 500px !important;
+        min-height: 500px !important;
+      }
+
+      .hero-content {
+        padding-left: 14px !important;
+        padding-right: 14px !important;
+        padding-bottom: 24px !important;
+      }
+
+      .collection-card.creation-slot .creation-card-details {
+        font-size: 17px !important;
+        line-height: 1.7 !important;
+      }
+    }
+</style>
+
+
+<style id="sv-toutes-futures-creations-auto-telephone">
+    /* =========================================================
+       TÉLÉPHONE UNIQUEMENT
+       TOUTES LES CRÉATIONS PRÉSENTES ET FUTURES :
+       hauteur automatique, photo entière, aucune découpe.
+       Le PC n'est pas modifié.
+       ========================================================= */
+    @media (max-width: 700px) {
+
+      .collection-card.creation-slot {
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+      }
+
+      .collection-card.creation-slot .collection-image {
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        aspect-ratio: auto !important;
+        overflow: visible !important;
+      }
+
+      .collection-card.creation-slot .collection-image img {
+        display: block !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        object-fit: contain !important;
+        object-position: center center !important;
+      }
+
+      /* Informations sous chaque future création */
+      .collection-card.creation-slot .creation-card-details {
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+      }
+    }
+</style>
 
 </body>
 </html>
