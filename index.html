@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 
-<html lang="fr">
+<html lang="fr" translate="no">
 <head>
     <meta charset="utf-8"/>
+    <meta name="google" content="notranslate"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Sergio Valente — Handmade Jewelry</title>
     <link href="css/style.css" rel="stylesheet"/>
@@ -829,7 +830,7 @@
             "presentation": "Wyjątkowa kreacja wykonana w mojej pracowni, ze szczególną dbałością o detale.",
             "inspiration": "Inspirowana kolorami i kształtami natury.",
             "matieres": "Miedź, kamień naturalny i elementy dekoracyjne.",
-            "details": "Każdy egzemplarz jest wykonany ręcznie i może mieć niewielkie róÅ¼nice, które czynią go wyjątkowym."
+            "details": "Każdy egzemplarz jest wykonany ręcznie i może mieć niewielkie różnice, które czynią go wyjątkowym."
           }
         },
 
@@ -4003,7 +4004,7 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
 <audio id="svAmbientMusic" autoplay="autoplay" loop="" preload="auto" playsinline="playsinline" src="audio/sergio-valente.mp3"></audio>
 <header class="site-header">
     <div class="header-inner">
-        <a class="brand" href="#accueil">
+        <a class="brand" translate="no" href="#accueil">
             Sergio Valente
         </a>
         <nav>
@@ -4012,7 +4013,7 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
             <a data-i18n="about" href="#about">À propos</a>
             <a data-i18n="contact" href="#contact">Contact</a>
         </nav>
-        <div aria-label="Langues" class="languages">
+        <div aria-label="Langues" class="languages" translate="no">
             <button data-lang="fr" type="button">FR</button>
             <button data-lang="en" type="button">EN</button>
             <button data-lang="es" type="button">ES</button>
@@ -14281,6 +14282,367 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
         pointer-events:none;
         background:var(--sv-real-background) center center / cover no-repeat;
       }
+    }
+</style>
+
+<style id="sv-phone-header-hero-polish">
+    /* TÉLÉPHONE UNIQUEMENT (700px et moins) — le PC n'est pas touché. */
+    @media (max-width:700px){
+      /* Ligne 1 : nom à gauche (libère la place du bouton musique) + icônes à droite */
+      .site-header .header-inner{
+        display:flex !important;
+        flex-wrap:wrap !important;
+        align-items:center !important;
+        flex-direction:row !important;
+        justify-content:space-between !important;
+        gap:10px 6px !important;
+        padding:10px 14px 8px !important;
+      }
+      .site-header .brand{
+        order:1 !important;
+        flex:1 1 auto !important;
+        min-width:0 !important;
+        width:auto !important;
+        margin:0 !important;
+        text-align:left !important;
+        padding-left:44px !important;
+        font-size:clamp(15px,4.6vw,19px) !important;
+        letter-spacing:.14em !important;
+        white-space:nowrap !important;
+      }
+      .site-header .social-links{
+        order:2 !important;
+        flex:0 0 auto !important;
+        margin:0 !important;
+        display:flex !important;
+        gap:14px !important;
+        align-items:center !important;
+      }
+      /* Ligne 2 : 6 langues, même largeur, bien alignées */
+      .site-header .languages{
+        order:3 !important;
+        flex:0 0 100% !important;
+        display:grid !important;
+        grid-template-columns:repeat(6,1fr) !important;
+        gap:6px !important;
+        margin:0 !important;
+      }
+      .site-header .languages button{
+        width:100% !important;
+        min-width:0 !important;
+        height:32px !important;
+        padding:0 !important;
+        font-size:12px !important;
+        letter-spacing:.06em !important;
+        border-radius:4px !important;
+      }
+      /* Ligne 3 : les 4 liens sur une seule ligne, répartis régulièrement */
+      .site-header nav{
+        order:4 !important;
+        flex:0 0 100% !important;
+        display:flex !important;
+        flex-wrap:nowrap !important;
+        justify-content:space-between !important;
+        align-items:center !important;
+        gap:6px !important;
+        margin:0 !important;
+        padding:9px 0 2px !important;
+        border-top:1px solid rgba(255,255,255,.16) !important;
+      }
+      .site-header nav a{
+        flex:0 1 auto !important;
+        padding:4px 2px !important;
+        font-size:clamp(9.5px,2.95vw,12.5px) !important;
+        letter-spacing:.07em !important;
+        white-space:nowrap !important;
+        text-transform:uppercase !important;
+      }
+
+      /* Texte blanc du hero : plus lisible (voile sombre doux + ombre) */
+      /* Fondu doux en bas de la photo : plus de coupure nette avec le fond bois */
+      .hero{
+        -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 84%,rgba(0,0,0,0) 100%) !important;
+        mask-image:linear-gradient(to bottom,#000 0%,#000 84%,rgba(0,0,0,0) 100%) !important;
+      }
+      /* Voile léger et très progressif, juste derrière le texte */
+      .hero::after{
+        content:"";
+        position:absolute;
+        left:0; right:0; bottom:0;
+        height:46%;
+        z-index:1;
+        pointer-events:none;
+        background:linear-gradient(to top, rgba(20,10,5,.42) 0%, rgba(20,10,5,.26) 50%, rgba(20,10,5,0) 100%);
+      }
+      .hero-content{ z-index:5 !important; bottom:13% !important; }
+      .hero-kicker,
+      .hero-html-line,
+      .hero-description{
+        color:#fff !important;
+        text-shadow:0 1px 2px rgba(0,0,0,.9), 0 2px 10px rgba(0,0,0,.8), 0 0 22px rgba(0,0,0,.55) !important;
+      }
+      .hero-kicker{ font-weight:700 !important; }
+      .hero-html-line{ font-weight:700 !important; }
+      .hero-description{ font-weight:500 !important; }
+    }
+</style>
+
+<style id="sv-phone-header-artisanal">
+    /* TÉLÉPHONE UNIQUEMENT — en-tête façon atelier : brun chaud, cuivre, finitions fines.
+       Le PC (plus de 700px) n'est pas touché. */
+    @media (max-width:700px){
+      .site-header{
+        background:
+          radial-gradient(120% 90% at 12% 0%, rgba(201,138,91,.20) 0%, rgba(201,138,91,0) 60%),
+          repeating-linear-gradient(45deg, rgba(255,255,255,.018) 0 2px, rgba(0,0,0,0) 2px 5px),
+          linear-gradient(180deg,#2a190f 0%,#170c07 100%) !important;
+        border-bottom:1px solid rgba(214,155,106,.55) !important;
+        box-shadow:0 1px 0 rgba(0,0,0,.6), 0 6px 18px rgba(0,0,0,.40) !important;
+      }
+
+      /* Nom : crème chaud, fines lettres espacées */
+      .site-header .brand{
+        color:#f3dcc2 !important;
+        text-shadow:0 1px 0 rgba(0,0,0,.7), 0 0 12px rgba(214,155,106,.25) !important;
+      }
+
+      /* Icônes Instagram / TikTok : médaillons cuivre */
+      .site-header .social-links a{
+        width:34px !important;
+        height:34px !important;
+        flex:0 0 34px !important;
+        color:#efc9a0 !important;
+        filter:none !important;
+        background:radial-gradient(circle at 30% 25%, rgba(214,155,106,.28), rgba(214,155,106,.06)) !important;
+        border:1px solid rgba(214,155,106,.75) !important;
+        box-shadow:inset 0 0 0 2px rgba(0,0,0,.28), 0 1px 4px rgba(0,0,0,.5) !important;
+        border-radius:50% !important;
+      }
+      .site-header .social-links a:hover,
+      .site-header .social-links a:active{
+        color:#fff3e2 !important;
+        filter:none !important;
+        border-color:#f0c79c !important;
+      }
+      .site-header .social-links svg{
+        width:18px !important;
+        height:18px !important;
+      }
+      .site-header .social-links{ gap:8px !important; }
+      .site-header .brand{
+        flex:1 1 0 !important;
+        font-size:clamp(14px,4.3vw,18px) !important;
+        letter-spacing:.11em !important;
+        padding-left:42px !important;
+      }
+
+      /* Langues : petites plaques, la langue active en cuivre poli */
+      .site-header .languages{ gap:7px !important; }
+      .site-header .languages button{
+        height:30px !important;
+        color:#e9cfb3 !important;
+        background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.015)) !important;
+        border:1px solid rgba(214,155,106,.50) !important;
+        border-radius:6px !important;
+        box-shadow:inset 0 1px 0 rgba(255,255,255,.08) !important;
+        font-size:11.5px !important;
+        letter-spacing:.08em !important;
+        font-weight:600 !important;
+      }
+      .site-header .languages button.active{
+        color:#2a140a !important;
+        background:linear-gradient(180deg,#f0c79c 0%,#c98a5b 100%) !important;
+        border-color:#f0c79c !important;
+        box-shadow:inset 0 1px 0 rgba(255,255,255,.45), 0 1px 5px rgba(0,0,0,.5) !important;
+      }
+
+      /* Menu : liseré cuivre dégradé + petits losanges entre les liens */
+      .site-header nav{
+        position:relative !important;
+        border-top:0 !important;
+        padding-top:11px !important;
+      }
+      .site-header nav::before{
+        content:"";
+        position:absolute;
+        left:0; right:0; top:0;
+        height:1px;
+        background:linear-gradient(90deg,rgba(214,155,106,0),rgba(214,155,106,.85) 50%,rgba(214,155,106,0));
+      }
+      .site-header nav a{
+        position:relative !important;
+        color:#f0dcc6 !important;
+        font-weight:500 !important;
+      }
+      @media (max-width:340px){
+        .site-header .brand{ letter-spacing:.05em !important; padding-left:40px !important; }
+        .site-header .social-links{ gap:6px !important; }
+        .site-header .social-links a{ width:30px !important; height:30px !important; flex:0 0 30px !important; }
+        .site-header .social-links svg{ width:16px !important; height:16px !important; }
+      }
+      .site-header nav a + a::before{
+        content:"";
+        position:absolute;
+        left:-5px; top:50%;
+        width:3px; height:3px;
+        margin-top:-1.5px;
+        background:#d69b6a;
+        transform:rotate(45deg);
+        opacity:.9;
+      }
+    }
+</style>
+
+<style id="sv-phone-header-sizes">
+    /* TÉLÉPHONE UNIQUEMENT — langues plus petites, menu et réseaux plus grands. PC non touché. */
+    @media (max-width:700px){
+      /* Instagram / TikTok : plus grands, couleurs d'origine */
+      .site-header .social-links{ gap:10px !important; }
+      .site-header .social-links a{
+        width:42px !important;
+        height:42px !important;
+        flex:0 0 42px !important;
+        background:transparent !important;
+        border:0 !important;
+        box-shadow:none !important;
+        border-radius:50% !important;
+      }
+      .site-header .social-links a:first-child{
+        color:#ff4f9a !important;
+        filter:drop-shadow(0 0 5px rgba(255,79,154,.55)) !important;
+      }
+      .site-header .social-links a:nth-child(2){
+        color:#25f4ee !important;
+        filter:drop-shadow(0 0 5px rgba(37,244,238,.55)) !important;
+      }
+      .site-header .social-links svg{
+        width:30px !important;
+        height:30px !important;
+      }
+      .site-header .brand{
+        font-size:clamp(14px,4.2vw,18px) !important;
+        padding-left:40px !important;
+      }
+
+      /* Langues : toutes petites, centrées */
+      .site-header .languages{
+        display:flex !important;
+        justify-content:center !important;
+        gap:5px !important;
+      }
+      .site-header .languages button{
+        width:32px !important;
+        min-width:32px !important;
+        height:22px !important;
+        font-size:10px !important;
+        letter-spacing:.04em !important;
+        border-radius:4px !important;
+        line-height:1 !important;
+      }
+
+      /* Menu : 4 grands boutons (2 x 2), faciles à toucher */
+      .site-header nav{
+        display:grid !important;
+        grid-template-columns:1fr 1fr !important;
+        gap:8px !important;
+        padding-top:12px !important;
+        padding-bottom:4px !important;
+      }
+      .site-header nav a{
+        display:flex !important;
+        align-items:center !important;
+        justify-content:center !important;
+        min-height:42px !important;
+        padding:0 8px !important;
+        font-size:clamp(12.5px,3.7vw,15px) !important;
+        letter-spacing:.07em !important;
+        font-weight:600 !important;
+        text-align:center !important;
+        color:#f6e3cd !important;
+        background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02)) !important;
+        border:1px solid rgba(214,155,106,.60) !important;
+        border-radius:8px !important;
+        box-shadow:inset 0 1px 0 rgba(255,255,255,.08), 0 1px 4px rgba(0,0,0,.4) !important;
+      }
+      .site-header nav a:active{
+        background:linear-gradient(180deg,#f0c79c,#c98a5b) !important;
+        color:#2a140a !important;
+      }
+      .site-header nav a + a::before{ display:none !important; }
+      @media (max-width:340px){
+        .site-header .social-links a{ width:36px !important; height:36px !important; flex:0 0 36px !important; }
+        .site-header .social-links svg{ width:26px !important; height:26px !important; }
+        .site-header .social-links{ gap:6px !important; }
+        .site-header nav a{ letter-spacing:.04em !important; padding:0 4px !important; }
+      }
+    }
+</style>
+
+<style id="sv-phone-header-minimal">
+    /* TÉLÉPHONE UNIQUEMENT — langues minuscules, menu horizontal, sans cadres. PC non touché. */
+    @media (max-width:700px){
+      .site-header .header-inner{ row-gap:4px !important; padding:8px 14px 6px !important; }
+
+      /* Langues : juste du petit texte, sans carrés */
+      .site-header .languages{
+        display:flex !important;
+        justify-content:center !important;
+        align-items:center !important;
+        gap:12px !important;
+      }
+      .site-header .languages button{
+        width:auto !important;
+        min-width:0 !important;
+        height:auto !important;
+        padding:2px 1px !important;
+        background:none !important;
+        border:0 !important;
+        border-bottom:1px solid transparent !important;
+        border-radius:0 !important;
+        box-shadow:none !important;
+        color:#d9bfa3 !important;
+        font-size:9.5px !important;
+        font-weight:500 !important;
+        letter-spacing:.08em !important;
+        line-height:1 !important;
+      }
+      .site-header .languages button.active{
+        background:none !important;
+        box-shadow:none !important;
+        color:#f0c79c !important;
+        font-weight:700 !important;
+        border-bottom:1px solid #d69b6a !important;
+      }
+
+      /* Menu : une seule ligne horizontale, texte seul, sans cadres */
+      .site-header nav{
+        display:flex !important;
+        flex-wrap:nowrap !important;
+        justify-content:space-between !important;
+        align-items:center !important;
+        gap:8px !important;
+        padding:9px 0 2px !important;
+      }
+      .site-header nav a{
+        display:inline-block !important;
+        flex:0 1 auto !important;
+        min-height:0 !important;
+        padding:3px 2px !important;
+        font-size:clamp(9.5px,2.95vw,12.5px) !important;
+        letter-spacing:.07em !important;
+        font-weight:500 !important;
+        color:#f0dcc6 !important;
+        background:none !important;
+        border:0 !important;
+        border-radius:0 !important;
+        box-shadow:none !important;
+        white-space:nowrap !important;
+      }
+      .site-header nav a:active{
+        background:none !important;
+        color:#f0c79c !important;
+      }
+      .site-header nav a + a::before{ display:block !important; left:-6px !important; }
     }
 </style>
 
