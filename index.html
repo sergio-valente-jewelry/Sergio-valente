@@ -3896,6 +3896,105 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
         })();
     </script>
 
+
+    <style id="FINAL-mobile-header-like-pc">
+        @media (max-width:700px){
+          /* BARRE TELEPHONE = même organisation que la maquette PC.
+             Aucun changement hors téléphone. */
+
+          .site-header{
+            position:relative !important;
+            width:100% !important;
+            padding:14px 16px 12px !important;
+            background:#120b08 !important;
+            border-bottom:1px solid rgba(255,255,255,.14) !important;
+          }
+
+          .site-header .header-inner{
+            width:100% !important;
+            max-width:none !important;
+            display:grid !important;
+            grid-template-columns:1fr auto !important;
+            grid-template-areas:
+              "brand social"
+              "languages languages"
+              "nav nav" !important;
+            gap:12px !important;
+            align-items:center !important;
+          }
+
+          .site-header .brand{
+            grid-area:brand !important;
+            display:block !important;
+            margin:0 !important;
+            font-size:1rem !important;
+            line-height:1.1 !important;
+            letter-spacing:.13em !important;
+            white-space:nowrap !important;
+            text-align:left !important;
+          }
+
+          .site-header .social-links{
+            grid-area:social !important;
+            display:flex !important;
+            align-items:center !important;
+            justify-content:flex-end !important;
+            gap:7px !important;
+            margin:0 !important;
+          }
+
+          .site-header .social-links a{
+            width:30px !important;
+            height:30px !important;
+            flex:0 0 30px !important;
+          }
+
+          .site-header .social-links svg{
+            width:21px !important;
+            height:21px !important;
+          }
+
+          .site-header .languages{
+            grid-area:languages !important;
+            display:flex !important;
+            align-items:center !important;
+            justify-content:center !important;
+            flex-wrap:nowrap !important;
+            width:100% !important;
+            margin:0 !important;
+            gap:5px !important;
+          }
+
+          .site-header .languages button{
+            min-width:39px !important;
+            min-height:34px !important;
+            padding:7px 6px !important;
+            font-size:.62rem !important;
+            line-height:1 !important;
+            flex:0 0 auto !important;
+          }
+
+          .site-header nav{
+            grid-area:nav !important;
+            display:flex !important;
+            align-items:center !important;
+            justify-content:center !important;
+            flex-wrap:wrap !important;
+            width:100% !important;
+            margin:0 !important;
+            gap:22px !important;
+            padding-top:2px !important;
+          }
+
+          .site-header nav a{
+            flex:0 0 auto !important;
+            font-size:.82rem !important;
+            line-height:1.2 !important;
+            white-space:nowrap !important;
+          }
+        }
+    </style>
+
 </head>
 <body>
 <div aria-label="Contrôle de la musique" class="sv-music-control">
