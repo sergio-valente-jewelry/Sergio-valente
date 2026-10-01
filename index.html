@@ -3871,32 +3871,6 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
           }
         }
     </style>
-    <script id="sv-final-mobile-music-v3">
-        (function(){
-          function startMusic(){
-            var audio=document.getElementById('svAmbientMusic');
-            if(!audio) return;
-            try{
-              audio.autoplay=true;
-              audio.playsInline=true;
-              audio.muted=false;
-              if(audio.volume<=0) audio.volume=0.12;
-              var p=audio.play();
-              if(p && p.catch) p.catch(function(){});
-            }catch(e){}
-          }
-          if(document.readyState==='loading'){
-            document.addEventListener('DOMContentLoaded',startMusic,{once:true});
-          }else{ startMusic(); }
-          window.addEventListener('load',startMusic,{once:true});
-          window.addEventListener('pageshow',startMusic);
-          ['pointerdown','touchstart','click','keydown'].forEach(function(ev){
-            document.addEventListener(ev,startMusic,{once:true,passive:true});
-          });
-        })();
-    </script>
-
-
     <style id="FINAL-mobile-header-like-pc">
         @media (max-width:700px){
           /* BARRE TELEPHONE = même organisation que la maquette PC.
@@ -13100,71 +13074,6 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
     reloadAllCreationInfo();
   });
 </script>
-<script id="sv-music-script">
-    (function () {
-    function initMusic() {
-      const audio = document.getElementById("svAmbientMusic");
-      const toggle = document.getElementById("svMusicToggle");
-      const volume = document.getElementById("svMusicVolume");
-
-      if (!audio || !toggle || !volume) return;
-
-      audio.volume = Number(volume.value || 12) / 100;
-
-      function updateIcon() {
-        toggle.textContent = audio.paused || audio.muted || audio.volume === 0
-          ? "🔇"
-          : "🔊";
-      }
-
-      // Coupe réellement la lecture. On utilise pause() en plus de muted()
-      // pour garantir que le son s'arrête même si un autre comportement du navigateur intervient.
-      toggle.addEventListener("click", function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        if (!audio.paused && !audio.muted) {
-          audio.muted = true;
-          audio.pause();
-        } else {
-          audio.muted = false;
-          audio.play().catch(function () {});
-        }
-
-        updateIcon();
-      });
-
-      volume.addEventListener("input", function (event) {
-        event.stopPropagation();
-
-        const value = Math.max(0, Math.min(100, Number(event.target.value) || 0));
-        audio.volume = value / 100;
-
-        if (value === 0) {
-          audio.muted = true;
-          audio.pause();
-        } else {
-          audio.muted = false;
-          audio.play().catch(function () {});
-        }
-
-        updateIcon();
-      });
-
-      audio.addEventListener("volumechange", updateIcon);
-      audio.addEventListener("play", updateIcon);
-      audio.addEventListener("pause", updateIcon);
-
-      updateIcon();
-    }
-
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", initMusic);
-    } else {
-      initMusic();
-    }
-  })();
-</script>
 <script id="sv-restore-creation-info-after-return">
     (function () {
       /*
@@ -13628,110 +13537,6 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
 </script>
 
 
-<script id="sv-final-music-autostart">
-    (function () {
-      function setupFinalMusic() {
-        const audio = document.getElementById("svAmbientMusic");
-        const toggle = document.getElementById("svMusicToggle");
-        const volume = document.getElementById("svMusicVolume");
-
-        if (!audio || !toggle || !volume) return;
-
-        const savedVolume = localStorage.getItem("svMusicVolume");
-        const initialVolume = savedVolume !== null
-          ? Math.max(0, Math.min(100, Number(savedVolume) || 0))
-          : 12;
-
-        volume.value = String(initialVolume);
-        audio.volume = initialVolume / 100;
-        audio.muted = false;
-
-        function updateIcon() {
-          toggle.textContent =
-            audio.paused || audio.muted || audio.volume === 0 ? "🔇" : "🔊";
-        }
-
-        function saveVolume() {
-          localStorage.setItem("svMusicVolume", String(Math.round(audio.volume * 100)));
-        }
-
-        function tryStartMusic() {
-          if (audio.volume <= 0) return;
-
-          audio.muted = false;
-          audio.play().then(function () {
-            updateIcon();
-          }).catch(function () {
-            /* Les navigateurs mobiles peuvent bloquer l'autoplay sonore.
-               Dans ce cas, le premier toucher/clic du visiteur démarre la musique. */
-            updateIcon();
-          });
-        }
-
-        /* Au chargement : musique douce à 12 % par défaut. */
-        tryStartMusic();
-
-        /* Si le téléphone bloque l'autoplay, le premier geste du visiteur
-           démarre automatiquement la musique au volume choisi. */
-        ["pointerdown", "touchstart", "click", "keydown"].forEach(function (eventName) {
-          document.addEventListener(eventName, function startAfterInteraction() {
-            if (audio.paused && audio.volume > 0) {
-              audio.play().catch(function () {});
-            }
-            updateIcon();
-          }, { once: true, passive: true });
-        });
-
-        volume.addEventListener("input", function (event) {
-          const value = Math.max(0, Math.min(100, Number(event.target.value) || 0));
-
-          audio.volume = value / 100;
-          audio.muted = value === 0;
-
-          localStorage.setItem("svMusicVolume", String(value));
-
-          if (value > 0 && audio.paused) {
-            audio.play().catch(function () {});
-          }
-
-          updateIcon();
-        });
-
-        toggle.addEventListener("click", function (event) {
-          event.preventDefault();
-          event.stopPropagation();
-
-          if (audio.paused || audio.muted || audio.volume === 0) {
-            if (audio.volume === 0) {
-              audio.volume = 0.12;
-              volume.value = "12";
-              localStorage.setItem("svMusicVolume", "12");
-            }
-            audio.muted = false;
-            audio.play().catch(function () {});
-          } else {
-            audio.pause();
-          }
-
-          updateIcon();
-        });
-
-        audio.addEventListener("play", updateIcon);
-        audio.addEventListener("pause", updateIcon);
-        audio.addEventListener("volumechange", updateIcon);
-
-        updateIcon();
-      }
-
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", setupFinalMusic, { once: true });
-      } else {
-        setupFinalMusic();
-      }
-    })();
-</script>
-
-
 <style id="sv-final-phone-patch-20261001">
     /* CORREÇÃO FINAL TELEFONE — PC preservado */
     @media (max-width:700px){
@@ -13834,83 +13639,6 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
       }
     }
 </style>
-<script id="sv-final-music-clean-20261001">
-    (function(){
-      function init(){
-        var audio=document.getElementById('svAmbientMusic');
-        var oldToggle=document.getElementById('svMusicToggle');
-        var oldVolume=document.getElementById('svMusicVolume');
-        if(!audio||!oldToggle||!oldVolume) return;
-
-        /* Remove listeners from previous music versions without changing the layout. */
-        var toggle=oldToggle.cloneNode(true);
-        var volume=oldVolume.cloneNode(true);
-        oldToggle.parentNode.replaceChild(toggle,oldToggle);
-        oldVolume.parentNode.replaceChild(volume,oldVolume);
-
-        var saved=localStorage.getItem('svMusicVolume');
-        var level=saved!==null ? Math.max(0,Math.min(100,Number(saved)||0)) : 12;
-        volume.value=String(level);
-        audio.volume=level/100;
-        audio.muted=false;
-
-        function icon(){
-          toggle.textContent=(audio.paused||audio.muted||audio.volume===0)?'🔇':'🔊';
-          toggle.setAttribute('aria-label',(audio.paused||audio.muted||audio.volume===0)?'Activer la musique':'Couper la musique');
-        }
-        function play(){
-          if(audio.volume<=0) return;
-          audio.muted=false;
-          var p=audio.play();
-          if(p&&p.catch) p.catch(function(){});
-          icon();
-        }
-
-        /* Tentative immédiate. Les navigateurs peuvent bloquer le son sans geste. */
-        play();
-
-        /* Premier geste: démarrage automatique si le navigateur avait bloqué l'autoplay. */
-        function firstGesture(){
-          if(audio.paused&&audio.volume>0) play();
-          icon();
-        }
-        ['pointerdown','touchstart','click','keydown'].forEach(function(name){
-          document.addEventListener(name,firstGesture,{once:true,passive:true});
-        });
-
-        volume.addEventListener('input',function(){
-          var v=Math.max(0,Math.min(100,Number(volume.value)||0));
-          audio.volume=v/100;
-          audio.muted=(v===0);
-          localStorage.setItem('svMusicVolume',String(v));
-          if(v>0&&audio.paused) play();
-          icon();
-        });
-
-        toggle.addEventListener('click',function(e){
-          e.preventDefault();
-          e.stopPropagation();
-          if(audio.paused||audio.muted||audio.volume===0){
-            if(audio.volume===0){audio.volume=.12;volume.value='12';localStorage.setItem('svMusicVolume','12');}
-            play();
-          }else{
-            audio.pause();
-            audio.muted=false;
-          }
-          icon();
-        });
-
-        audio.addEventListener('play',icon);
-        audio.addEventListener('pause',icon);
-        audio.addEventListener('volumechange',icon);
-        icon();
-      }
-      if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true});
-      else init();
-    })();
-</script>
-
-
 <style id="sv-correction-telephone-seulement">
     /* =========================================================
        CORRECTIONS TÉLÉPHONE UNIQUEMENT
@@ -14645,6 +14373,170 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
       .site-header nav a + a::before{ display:block !important; left:-6px !important; }
     }
 </style>
+
+<style id="sv-phone-music-button">
+    /* TÉLÉPHONE UNIQUEMENT — bouton son sans rond, icône cuivre. PC non touché. */
+    @media (max-width:700px){
+      .sv-music-control,
+      .sv-music-control:hover,
+      .sv-music-control:focus-within{
+        top:20px !important;
+        left:8px !important;
+        width:40px !important;
+        height:40px !important;
+        padding:0 !important;
+        border:0 !important;
+        border-radius:0 !important;
+        background:none !important;
+        box-shadow:none !important;
+        -webkit-backdrop-filter:none !important;
+        backdrop-filter:none !important;
+        grid-template-columns:none !important;
+      }
+      .sv-music-control .sv-music-volume{ display:none !important; }
+      .sv-music-control button,
+      .sv-music-control button:hover,
+      .sv-music-control button:focus,
+      .sv-music-control button:active{
+        width:40px !important;
+        height:40px !important;
+        border:0 !important;
+        border-radius:0 !important;
+        background:none !important;
+        box-shadow:none !important;
+        outline:none !important;
+        font-size:0 !important;
+        line-height:0 !important;
+        color:transparent !important;
+        -webkit-tap-highlight-color:transparent;
+      }
+      .sv-music-control button::before{
+        content:"";
+        display:block;
+        width:18px;
+        height:18px;
+        margin:auto;
+        background-repeat:no-repeat;
+        background-position:center;
+        background-size:contain;
+        opacity:.6;
+        filter:drop-shadow(0 0 1px rgba(0,0,0,.6));
+        background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e2c2a3' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='3,9 7.5,9 12.5,5 12.5,19 7.5,15 3,15'/%3E%3Cline x1='16' y1='9' x2='21' y2='15'/%3E%3Cline x1='21' y1='9' x2='16' y2='15'/%3E%3C/svg%3E");
+      }
+      .sv-music-control button.sv-on::before{
+        background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e2c2a3' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='3,9 7.5,9 12.5,5 12.5,19 7.5,15 3,15'/%3E%3Cpath d='M16 8.5a5 5 0 0 1 0 7'/%3E%3Cpath d='M18.8 5.8a9 9 0 0 1 0 12.4'/%3E%3C/svg%3E");
+      }
+    }
+</style>
+
+<script id="sv-music-unified">
+    (function(){
+      var audio=document.getElementById('svAmbientMusic');
+      var toggle=document.getElementById('svMusicToggle');
+      var volume=document.getElementById('svMusicVolume');
+      if(!audio||!toggle||!volume) return;
+
+      var DEFAULT_LEVEL=12;
+      var userPaused=false;      /* le visiteur a coupé la musique lui-même */
+      var pausedByLeaving=false; /* coupée automatiquement car il a quitté la page */
+      var armed=false;
+
+      function clamp(v){ v=Number(v); return isFinite(v)?Math.max(0,Math.min(100,v)):DEFAULT_LEVEL; }
+      var saved=null; try{ saved=localStorage.getItem('svMusicVolume'); }catch(e){}
+      var level=saved!==null?clamp(saved):DEFAULT_LEVEL;
+      if(level<=0) level=DEFAULT_LEVEL;
+
+      audio.loop=true;
+      audio.muted=false;
+      audio.volume=level/100;
+      volume.value=String(level);
+
+      function isOn(){ return !audio.paused && !audio.muted && audio.volume>0; }
+      function refresh(){
+        var on=isOn();
+        toggle.textContent=on?'\uD83D\uDD0A':'\uD83D\uDD07';
+        toggle.classList.toggle('sv-on',on);
+        toggle.classList.toggle('sv-off',!on);
+        toggle.setAttribute('aria-label',on?'Couper la musique':'Activer la musique');
+        toggle.setAttribute('aria-pressed',on?'true':'false');
+      }
+
+      /* Lance la lecture. Renvoie true si ça joue, false si le navigateur a refusé. */
+      function start(){
+        if(userPaused||document.hidden||audio.volume<=0) return Promise.resolve(false);
+        audio.muted=false;
+        var p;
+        try{ p=audio.play(); }catch(e){ return Promise.resolve(false); }
+        if(!p||!p.then){ refresh(); return Promise.resolve(!audio.paused); }
+        return p.then(function(){ pausedByLeaving=false; refresh(); return true; })
+                .catch(function(){ refresh(); return false; });
+      }
+
+      /* Si le téléphone bloque le son automatique, le PREMIER toucher n'importe où le démarre. */
+      var gestures=['pointerup','touchend','click','keydown'];
+      function onGesture(e){
+        if(e.target&&e.target.closest&&e.target.closest('.sv-music-control')) return; /* le bouton gère lui-même */
+        start().then(function(ok){ if(ok) disarm(); });
+      }
+      function arm(){
+        if(armed) return; armed=true;
+        gestures.forEach(function(n){ document.addEventListener(n,onGesture,true); });
+      }
+      function disarm(){
+        if(!armed) return; armed=false;
+        gestures.forEach(function(n){ document.removeEventListener(n,onGesture,true); });
+      }
+      function tryAutoplay(){
+        if(userPaused||!audio.paused) return;
+        start().then(function(ok){ if(!ok) arm(); });
+      }
+
+      /* Bouton muet / son */
+      toggle.addEventListener('click',function(e){
+        e.preventDefault(); e.stopPropagation();
+        if(isOn()){
+          userPaused=true; audio.pause();
+        }else{
+          userPaused=false;
+          if(audio.volume<=0){ audio.volume=DEFAULT_LEVEL/100; volume.value=String(DEFAULT_LEVEL); }
+          start().then(function(ok){ if(ok) disarm(); });
+        }
+        refresh();
+      });
+
+      /* Curseur de volume (visible sur ordinateur) */
+      volume.addEventListener('input',function(e){
+        e.stopPropagation();
+        var v=clamp(volume.value);
+        audio.volume=v/100;
+        try{ localStorage.setItem('svMusicVolume',String(v)); }catch(err){}
+        if(v===0){ audio.pause(); }
+        else if(audio.paused){ userPaused=false; start(); }
+        refresh();
+      });
+
+      /* Le visiteur quitte le site (autre onglet, autre appli, écran verrouillé, fermeture) : la musique s'arrête. */
+      function leave(){
+        if(!audio.paused){ pausedByLeaving=true; audio.pause(); }
+        refresh();
+      }
+      function back(){
+        if(pausedByLeaving&&!userPaused) start();
+        else tryAutoplay();
+      }
+      document.addEventListener('visibilitychange',function(){ if(document.hidden) leave(); else back(); });
+      window.addEventListener('pagehide',leave);
+      window.addEventListener('pageshow',function(e){ if(e.persisted) back(); });
+
+      audio.addEventListener('play',refresh);
+      audio.addEventListener('pause',refresh);
+      audio.addEventListener('volumechange',refresh);
+
+      refresh();
+      tryAutoplay();
+      window.addEventListener('load',tryAutoplay);
+    })();
+</script>
 
 </body>
 </html>
