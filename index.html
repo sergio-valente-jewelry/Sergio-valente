@@ -3932,13 +3932,101 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
         }
     </style>
 
+
+    <style id="sv-v6-hero-no-left-clip">
+        /* V6 — le texte du hero ne peut plus être décalé hors de l'écran sur mobile. */
+        @media (max-width:700px){
+          .hero-content{
+            left:0 !important;
+            right:0 !important;
+            width:100% !important;
+            max-width:100% !important;
+            margin:0 !important;
+            transform:none !important;
+            padding-left:18px !important;
+            padding-right:18px !important;
+            box-sizing:border-box !important;
+          }
+          .hero-content *{
+            max-width:100% !important;
+          }
+        }
+        @media (max-width:380px){
+          .hero-content{
+            padding-left:14px !important;
+            padding-right:14px !important;
+          }
+        }
+    </style>
+
+    <style id="sv-v6-music-autoplay">
+        /* V6 — reforço do arranque automático, sem alterar o botão MUTE. */
+        #svAmbientMusic{
+          -webkit-playsinline: true;
+        }
+    </style>
+
+    <style id="sv-v7-hero-auto-natural-centered">
+        /* V7 — MOBILE: imagem principal em tamanho natural, sem recorte; texto sempre centrado. */
+        @media (max-width:700px){
+          .hero{
+            position:relative !important;
+            width:100% !important;
+            height:auto !important;
+            min-height:0 !important;
+            max-height:none !important;
+            overflow:visible !important;
+            display:block !important;
+            background:transparent !important;
+          }
+          .hero-image{
+            position:static !important;
+            display:block !important;
+            width:100% !important;
+            height:auto !important;
+            min-height:0 !important;
+            max-height:none !important;
+            object-fit:contain !important;
+            object-position:center center !important;
+            transform:none !important;
+            margin:0 auto !important;
+          }
+          .hero-content{
+            position:absolute !important;
+            left:0 !important;
+            right:0 !important;
+            bottom:0 !important;
+            width:100% !important;
+            max-width:100% !important;
+            margin:0 auto !important;
+            padding:0 14px 18px !important;
+            box-sizing:border-box !important;
+            text-align:center !important;
+            transform:none !important;
+          }
+          .hero-content,
+          .hero-content *{
+            text-align:center !important;
+            margin-left:auto !important;
+            margin-right:auto !important;
+            max-width:100% !important;
+            box-sizing:border-box !important;
+          }
+          .hero-kicker,
+          .hero-html-line,
+          .hero-description{
+            width:100% !important;
+            text-align:center !important;
+          }
+        }
+    </style>
 </head>
 <body>
 <div aria-label="Contrôle de la musique" class="sv-music-control">
     <button aria-label="Activer ou couper la musique" id="svMusicToggle" title="Muet / Son" type="button">🔊</button>
     <input aria-label="Volume de la musique" class="sv-music-volume" id="svMusicVolume" max="100" min="0" title="Volume" type="range" value="12"/>
 </div>
-<audio id="svAmbientMusic" loop="" preload="auto" src="audio/sergio-valente.mp3"></audio>
+<audio id="svAmbientMusic" autoplay="autoplay" loop="" preload="auto" playsinline="playsinline" src="audio/sergio-valente.mp3"></audio>
 <header class="site-header">
     <div class="header-inner">
         <a class="brand" href="#accueil">
@@ -13532,17 +13620,29 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
           if (audio.volume <= 0) return;
 
           audio.muted = false;
-          audio.play().then(function () {
-            updateIcon();
-          }).catch(function () {
-            /* Les navigateurs mobiles peuvent bloquer l'autoplay sonore.
-               Dans ce cas, le premier toucher/clic du visiteur démarre la musique. */
-            updateIcon();
-          });
+          var p = audio.play();
+          if (p && p.then) {
+            p.then(function () {
+              updateIcon();
+            }).catch(function () {
+              updateIcon();
+            });
+          }
         }
 
-        /* Au chargement : musique douce à 12 % par défaut. */
+        /* Tentatives au chargement : certains téléphones autorisent
+           l'autoplay après le chargement complet de la page. */
         tryStartMusic();
+        window.addEventListener('load', function () {
+          tryStartMusic();
+          setTimeout(tryStartMusic, 500);
+          setTimeout(tryStartMusic, 1500);
+        }, { once: true });
+        document.addEventListener('visibilitychange', function () {
+          if (!document.hidden && audio.paused && audio.volume > 0) {
+            tryStartMusic();
+          }
+        });
 
         /* Si le téléphone bloque l'autoplay, le premier geste du visiteur
            démarre automatiquement la musique au volume choisi. */
@@ -13637,6 +13737,54 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
       }
       if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bindMute,{once:true});
       else bindMute();
+    })();
+</script>
+
+
+<script id="sv-v8-music-auto-strong">
+    (function(){
+      function forceAutoMusic(){
+        var audio=document.getElementById('svAmbientMusic');
+        if(!audio) return;
+
+        var vol=parseFloat(audio.dataset.svAutoVolume || '0.12');
+        if(!(vol>0)) vol=0.12;
+        audio.volume=vol;
+        audio.muted=false;
+
+        function playNow(){
+          if(audio.volume<=0) return;
+          try{
+            var p=audio.play();
+            if(p && p.catch) p.catch(function(){});
+          }catch(e){}
+        }
+
+        /* Lancement automatique dès que le navigateur le permet. */
+        playNow();
+
+        if(document.readyState!=='complete'){
+          window.addEventListener('load', playNow, {once:true});
+        }
+        setTimeout(playNow, 250);
+        setTimeout(playNow, 1000);
+        setTimeout(playNow, 2500);
+
+        /* Si le navigateur mobile interdit le son sans geste,
+           le premier toucher/clic lance immédiatement la musique. */
+        function unlock(){
+          if(audio.paused && !audio.muted && audio.volume>0) playNow();
+        }
+        ['touchstart','pointerdown','click'].forEach(function(ev){
+          document.addEventListener(ev, unlock, {passive:true});
+        });
+      }
+
+      if(document.readyState==='loading'){
+        document.addEventListener('DOMContentLoaded', forceAutoMusic, {once:true});
+      }else{
+        forceAutoMusic();
+      }
     })();
 </script>
 
