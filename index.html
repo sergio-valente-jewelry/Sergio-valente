@@ -3702,69 +3702,14 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
         }
     </style>
 
-    <style id="sv-final-text-integrity-patch">
-        /* CORRECTION FINALE DU TEXTE — ne change ni les photos ni la structure mobile. */
-        html { -webkit-text-size-adjust: 100% !important; text-size-adjust: 100% !important; }
-
-        #collectionLightbox .lightbox-info,
-        #collectionLightbox .lightbox-info * {
-          box-sizing: border-box !important;
-        }
-
-        #collectionLightbox .lightbox-info,
-        #collectionLightbox #lightboxTitle,
-        #collectionLightbox #lightboxDescription,
-        #collectionLightbox .creation-extra-info,
-        #collectionLightbox .creation-extra-info p,
-        #collectionLightbox .creation-card-detail-line {
-          min-width: 0 !important;
-          max-width: 100% !important;
-          overflow: visible !important;
-          overflow-wrap: anywhere !important;
-          word-break: normal !important;
-          hyphens: none !important;
-        }
-
-        #collectionLightbox #lightboxDescription {
-          white-space: pre-wrap !important;
-          word-break: normal !important;
-          overflow-wrap: anywhere !important;
-          text-overflow: clip !important;
-        }
-
-        #collectionLightbox .creation-extra-info[hidden] {
-          display: none !important;
-        }
-
-        /* Le texte général du site ne doit jamais être coupé par la largeur du téléphone. */
-        @media (max-width: 700px) {
-          body, main, section, article, p, h1, h2, h3, h4, .about-text,
-          .about-content, .hero-content, .brand, [data-i18n] {
-            overflow-wrap: anywhere;
-            word-break: normal;
-            hyphens: none;
-          }
-
-          #collectionLightbox .lightbox-dialog {
-            width: 100% !important;
-            max-width: 100% !important;
-            min-width: 0 !important;
-          }
-
-          #collectionLightbox .lightbox-info {
-            width: 100% !important;
-            max-width: 100% !important;
-            padding-left: 14px !important;
-            padding-right: 14px !important;
-          }
-
-          #collectionLightbox #lightboxTitle {
-            white-space: normal !important;
-            overflow-wrap: anywhere !important;
-          }
+    <style id="sv-mobile-final-v3">
+        /* V3 MOBILE UNIQUEMENT : image hero complète + textes complets. PC inchangé. */
+        @media (max-width:700px){
+          .hero-image{object-fit:contain !important; object-position:center center !important; background:transparent !important;}
+          .collection-card.creation-slot .creation-card-details{display:block !important; visibility:visible !important; opacity:1 !important; height:auto !important; max-height:none !important; overflow:visible !important; white-space:pre-line !important; -webkit-text-size-adjust:100% !important; text-rendering:optimizeLegibility !important;}
+          .collection-card.creation-slot .creation-card-detail-line{display:block !important; visibility:visible !important; opacity:1 !important; white-space:pre-line !important; overflow:visible !important;}
         }
     </style>
-
 </head>
 <body>
 <div aria-label="Contrôle de la musique" class="sv-music-control">
@@ -11209,7 +11154,7 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
      ========================================================= */
 
   const creationTranslationCacheKey =
-    "sergioValenteCreationTranslations_v4";
+    "sergioValenteCreationTranslations_v3";
 
   function normalizeInfoKey(key) {
     return key
@@ -11314,34 +11259,22 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
     });
 
     /*
-       MODE TEXTE LIBRE / SOURCE COMPLETE
-       -----------------------------------
-       On conserve aussi le contenu qui précède un champ reconnu.
-       Exemple réel :
-         Pedra vulcânica
-         Material: Cobre
-         Preço: 10 €
-       L'ancien parseur voyait « Material » et perdait la première ligne.
-       Pour les fiches de créations, le fichier infos.txt doit rester
-       entièrement affichable : aucune ligne du fichier ne doit disparaître.
+       MODE TEXTE LIBRE
+       Si aucun champ connu (title=, materials=, etc.) n'est détecté,
+       tout le contenu du fichier est conservé tel quel.
+       La première ligne devient le titre et le reste le texte de la création.
     */
-    const sourceLines = lines
-      .map(function(line) { return line.trim(); })
-      .filter(function(line) {
-        return line &&
-          !/^id\s*[:=]/i.test(line) &&
-          !/^(?:lang|langue|language)\s*[:=]/i.test(line);
-      });
+    if (recognizedFieldCount === 0) {
+      const freeLines = lines
+        .map(function(line) { return line.trim(); })
+        .filter(function(line) {
+          return line && !/^id\s*[:=]/i.test(line) && !/^(?:lang|langue|language)\s*[:=]/i.test(line);
+        });
 
-    if (sourceLines.length) {
-      const firstLineLooksLikeField = /^(?:titre|title|nom|name|presentation|description|desc|inspiration|matieres?|materials?|material|details?|detail|langue|language)\s*[:=]/i.test(sourceLines[0]);
-
-      /* Si le fichier n'est pas un pur fichier de champs, conserver
-         exactement toutes ses lignes comme texte libre. */
-      if (recognizedFieldCount === 0 || !firstLineLooksLikeField) {
-        info.texteLibre = sourceLines.join("\n");
-        info.titre = sourceLines[0];
-        info.presentation = sourceLines.slice(1).join("\n");
+      if (freeLines.length) {
+        info.texteLibre = freeLines.join("\n");
+        info.titre = freeLines[0];
+        info.presentation = freeLines.slice(1).join("\n");
       }
     }
 
@@ -12874,41 +12807,78 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
   /* =========================================================
      INITIALISATION
      ========================================================= */
-  /*
-     GARDE-TEXTE : après chaque rendu d'une création, le contenu visible
-     doit rester celui de la source infos.txt (ou sa traduction complète),
-     sans dépendre d'un ancien résultat en cache.
-  */
-  function svEnsureCreationTextVisibility() {
-    document.querySelectorAll('.creation-slot[data-info-file]').forEach(function(card) {
-      const details = card.querySelector('.creation-card-details');
-      if (details) {
-        details.style.maxWidth = '100%';
-        details.style.overflowWrap = 'anywhere';
-        details.style.wordBreak = 'normal';
-      }
-    });
-
-    if (currentCreation) {
-      const desc = document.getElementById('lightboxDescription');
-      if (desc) {
-        desc.style.maxWidth = '100%';
-        desc.style.overflow = 'visible';
-        desc.style.whiteSpace = 'pre-wrap';
-        desc.style.overflowWrap = 'anywhere';
-        desc.style.wordBreak = 'normal';
-      }
-    }
-  }
-
   applyLanguage(currentLanguage);
   updateCreationCards();
-  svEnsureCreationTextVisibility();
 
   /* Prépare les cartes puis charge leurs infos sous chaque photo. */
   prepareCreationSlots().then(function () {
     reloadAllCreationInfo();
   });
+</script>
+<script id="sv-music-script">
+    (function () {
+    function initMusic() {
+      const audio = document.getElementById("svAmbientMusic");
+      const toggle = document.getElementById("svMusicToggle");
+      const volume = document.getElementById("svMusicVolume");
+
+      if (!audio || !toggle || !volume) return;
+
+      audio.volume = Number(volume.value || 12) / 100;
+
+      function updateIcon() {
+        toggle.textContent = audio.paused || audio.muted || audio.volume === 0
+          ? "🔇"
+          : "🔊";
+      }
+
+      // Coupe réellement la lecture. On utilise pause() en plus de muted()
+      // pour garantir que le son s'arrête même si un autre comportement du navigateur intervient.
+      toggle.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (!audio.paused && !audio.muted) {
+          audio.muted = true;
+          audio.pause();
+        } else {
+          audio.muted = false;
+          audio.play().catch(function () {});
+        }
+
+        updateIcon();
+      });
+
+      volume.addEventListener("input", function (event) {
+        event.stopPropagation();
+
+        const value = Math.max(0, Math.min(100, Number(event.target.value) || 0));
+        audio.volume = value / 100;
+
+        if (value === 0) {
+          audio.muted = true;
+          audio.pause();
+        } else {
+          audio.muted = false;
+          audio.play().catch(function () {});
+        }
+
+        updateIcon();
+      });
+
+      audio.addEventListener("volumechange", updateIcon);
+      audio.addEventListener("play", updateIcon);
+      audio.addEventListener("pause", updateIcon);
+
+      updateIcon();
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initMusic);
+    } else {
+      initMusic();
+    }
+  })();
 </script>
 <script id="sv-restore-creation-info-after-return">
     (function () {
