@@ -14393,7 +14393,50 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
         backdrop-filter:none !important;
         grid-template-columns:none !important;
       }
-      .sv-music-control .sv-music-volume{ display:none !important; }
+      /* Petit curseur de volume VERTICAL, juste sous le haut-parleur, très discret */
+      .sv-music-control .sv-music-volume{
+        display:block !important;
+        position:absolute !important;
+        left:-1px !important;
+        top:47px !important;
+        width:42px !important;
+        height:26px !important;
+        margin:0 !important;
+        padding:0 !important;
+        box-sizing:border-box !important;
+        -webkit-appearance:none;
+        appearance:none;
+        background:transparent !important;
+        border:0 !important;
+        box-shadow:none !important;
+        border-radius:0 !important;
+        transform:rotate(-90deg);
+        transform-origin:center center;
+        touch-action:none;
+        opacity:0 !important;
+        pointer-events:none !important;
+        cursor:pointer;
+        transition:opacity .2s ease;
+      }
+      /* Caché au repos ; apparaît quand on touche le bouton son, puis se referme seul */
+      .sv-music-control.sv-vol-open .sv-music-volume{
+        opacity:.9 !important;
+        pointer-events:auto !important;
+      }
+      .sv-music-control .sv-music-volume:focus{ outline:none; }
+      .sv-music-volume::-webkit-slider-runnable-track{
+        height:2px; border-radius:1px; background:rgba(239,201,160,.50);
+      }
+      .sv-music-volume::-moz-range-track{
+        height:2px; border-radius:1px; background:rgba(239,201,160,.50);
+      }
+      .sv-music-volume::-webkit-slider-thumb{
+        -webkit-appearance:none; width:11px; height:11px; margin-top:-4.5px;
+        border-radius:50%; border:0; background:#e2c2a3; box-shadow:none;
+      }
+      .sv-music-volume::-moz-range-thumb{
+        width:11px; height:11px; border-radius:50%; border:0; background:#e2c2a3;
+      }
       .sv-music-control button,
       .sv-music-control button:hover,
       .sv-music-control button:focus,
@@ -14425,6 +14468,54 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
       }
       .sv-music-control button.sv-on::before{
         background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e2c2a3' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='3,9 7.5,9 12.5,5 12.5,19 7.5,15 3,15'/%3E%3Cpath d='M16 8.5a5 5 0 0 1 0 7'/%3E%3Cpath d='M18.8 5.8a9 9 0 0 1 0 12.4'/%3E%3C/svg%3E");
+      }
+    }
+</style>
+
+<style id="sv-pc-volume-slider-easy">
+    /* ORDINATEUR : curseur de volume plus facile à attraper (la zone cliquable était de 3 px). */
+    @media (min-width:701px){
+      .sv-music-control:hover,
+      .sv-music-control:focus-within{
+        width:132px !important;
+      }
+      .sv-music-control:hover .sv-music-volume,
+      .sv-music-control:focus-within .sv-music-volume{
+        width:80px !important;
+        height:22px !important;
+        margin:0 !important;
+        cursor:pointer !important;
+      }
+      .sv-music-volume{
+        -webkit-appearance:none;
+        appearance:none;
+        background:transparent;
+      }
+      .sv-music-volume::-webkit-slider-runnable-track{
+        height:3px;
+        border-radius:2px;
+        background:rgba(255,255,255,.35);
+      }
+      .sv-music-volume::-moz-range-track{
+        height:3px;
+        border-radius:2px;
+        background:rgba(255,255,255,.35);
+      }
+      .sv-music-volume::-webkit-slider-thumb{
+        -webkit-appearance:none;
+        width:12px;
+        height:12px;
+        margin-top:-4.5px;
+        border-radius:50%;
+        border:0;
+        background:#e8c9a6;
+      }
+      .sv-music-volume::-moz-range-thumb{
+        width:12px;
+        height:12px;
+        border-radius:50%;
+        border:0;
+        background:#e8c9a6;
       }
     }
 </style>
@@ -14486,14 +14577,43 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
         if(!armed) return; armed=false;
         gestures.forEach(function(n){ document.removeEventListener(n,onGesture,true); });
       }
+      /* Son bloqué par le navigateur : on lance la lecture SANS son (toujours autorisé),
+         la musique est alors déjà chargée et le premier toucher la fait entendre aussitôt. */
+      function silentStart(){
+        if(userPaused||document.hidden) return;
+        try{
+          audio.muted=true;
+          var p=audio.play();
+          if(p&&p.catch) p.catch(function(){});
+        }catch(e){}
+        refresh();
+      }
       function tryAutoplay(){
         if(userPaused||!audio.paused) return;
-        start().then(function(ok){ if(!ok) arm(); });
+        start().then(function(ok){ if(!ok){ silentStart(); arm(); } });
       }
+
+      /* Panneau de volume (utilisé sur téléphone : s'ouvre quand on touche le haut-parleur, se referme seul) */
+      var box=toggle.closest('.sv-music-control');
+      var volTimer=null;
+      function showVolume(){
+        if(!box) return;
+        box.classList.add('sv-vol-open');
+        clearTimeout(volTimer);
+        volTimer=setTimeout(hideVolume,3500);
+      }
+      function hideVolume(){
+        if(box) box.classList.remove('sv-vol-open');
+        clearTimeout(volTimer);
+      }
+      document.addEventListener('pointerdown',function(e){
+        if(box&&box.classList.contains('sv-vol-open')&&!(e.target.closest&&e.target.closest('.sv-music-control'))) hideVolume();
+      },true);
 
       /* Bouton muet / son */
       toggle.addEventListener('click',function(e){
         e.preventDefault(); e.stopPropagation();
+        showVolume();
         if(isOn()){
           userPaused=true; audio.pause();
         }else{
@@ -14504,16 +14624,26 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
         refresh();
       });
 
-      /* Curseur de volume (visible sur ordinateur) */
-      volume.addEventListener('input',function(e){
-        e.stopPropagation();
-        var v=clamp(volume.value);
+      /* Curseurs de volume : celui du haut-parleur (ordinateur + panneau téléphone)
+         et celui, toujours visible, de l'en-tête (téléphone). Ils restent synchronisés. */
+      var headerVolume=null;
+      function applyLevel(v){
+        v=clamp(v);
         audio.volume=v/100;
+        volume.value=String(v);
+        if(headerVolume) headerVolume.value=String(v);
         try{ localStorage.setItem('svMusicVolume',String(v)); }catch(err){}
         if(v===0){ audio.pause(); }
-        else if(audio.paused){ userPaused=false; start(); }
+        else if(audio.paused){ userPaused=false; start().then(function(ok){ if(ok) disarm(); }); }
         refresh();
+      }
+      volume.addEventListener('input',function(e){
+        e.stopPropagation();
+        showVolume();
+        applyLevel(volume.value);
       });
+
+
 
       /* Le visiteur quitte le site (autre onglet, autre appli, écran verrouillé, fermeture) : la musique s'arrête. */
       function leave(){
