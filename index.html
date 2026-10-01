@@ -1,3 +1,4 @@
+`````
 ````
 
 <!DOCTYPE html>
@@ -3702,477 +3703,265 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
         }
     </style>
 
-    <style id="sv-mobile-final-v3">
-        /* V3 MOBILE UNIQUEMENT : image hero complète + textes complets. PC inchangé. */
-        @media (max-width:700px){
-          .hero-image{object-fit:cover !important; object-position:center center !important;}
-          .collection-card.creation-slot .creation-card-details{display:block !important; visibility:visible !important; opacity:1 !important; height:auto !important; max-height:none !important; overflow:visible !important; white-space:pre-line !important; -webkit-text-size-adjust:100% !important; text-rendering:optimizeLegibility !important;}
-          .collection-card.creation-slot .creation-card-detail-line{display:block !important; visibility:visible !important; opacity:1 !important; white-space:pre-line !important; overflow:visible !important;}
-        }
-    </style>
+    <style id="sv-final-text-integrity-patch">
+        /* CORRECTION FINALE DU TEXTE — ne change ni les photos ni la structure mobile. */
+        html { -webkit-text-size-adjust: 100% !important; text-size-adjust: 100% !important; }
 
-    <style id="sv-v5-mobile-text-mute-fix">
-        @media (max-width:700px){
-          .collection-card.creation-slot .creation-card-details{
-            display:block !important;
-            visibility:visible !important;
-            opacity:1 !important;
-            height:auto !important;
-            max-height:none !important;
-            overflow:visible !important;
-            width:100% !important;
-            max-width:100% !important;
-            white-space:pre-line !important;
-            overflow-wrap:normal !important;
-            word-break:normal !important;
-            hyphens:none !important;
-            text-overflow:clip !important;
-            -webkit-text-size-adjust:100% !important;
-            text-rendering:optimizeLegibility !important;
-          }
-          .collection-card.creation-slot .creation-card-details *{
-            white-space:pre-line !important;
-            overflow-wrap:normal !important;
-            word-break:normal !important;
-            hyphens:none !important;
-          }
+        #collectionLightbox .lightbox-info,
+        #collectionLightbox .lightbox-info * {
+          box-sizing: border-box !important;
         }
-    </style>
 
-    <style id="sv-hero-exact-pc-final">
-        /* HERO FINAL — téléphone = même comportement que PC */
-        .hero {
-          position: relative !important;
-          overflow: hidden !important;
-          min-height: 520px !important;
-          height: min(72vh, 760px) !important;
-          display: block !important;
-          background: transparent !important;
+        #collectionLightbox .lightbox-info,
+        #collectionLightbox #lightboxTitle,
+        #collectionLightbox #lightboxDescription,
+        #collectionLightbox .creation-extra-info,
+        #collectionLightbox .creation-extra-info p,
+        #collectionLightbox .creation-card-detail-line {
+          min-width: 0 !important;
+          max-width: 100% !important;
+          overflow: visible !important;
+          overflow-wrap: anywhere !important;
+          word-break: normal !important;
+          hyphens: none !important;
         }
-        .hero-image {
-          position: static !important;
-          inset: auto !important;
-          display: block !important;
-          width: 100% !important;
-          height: min(72vh, 760px) !important;
-          min-height: 520px !important;
-          max-height: none !important;
-          object-fit: cover !important;
-          object-position: center center !important;
-          transform: none !important;
+
+        #collectionLightbox #lightboxDescription {
+          white-space: pre-wrap !important;
+          word-break: normal !important;
+          overflow-wrap: anywhere !important;
+          text-overflow: clip !important;
         }
-        @media (max-width: 1024px) {
-          .hero-image {
-            height: min(60vh, 620px) !important;
-            min-height: 430px !important;
-          }
+
+        #collectionLightbox .creation-extra-info[hidden] {
+          display: none !important;
         }
+
+        /* Le texte général du site ne doit jamais être coupé par la largeur du téléphone. */
         @media (max-width: 700px) {
-          .hero {
-            min-height: 520px !important;
-            height: min(72vh, 760px) !important;
-            display: block !important;
+          body, main, section, article, p, h1, h2, h3, h4, .about-text,
+          .about-content, .hero-content, .brand, [data-i18n] {
+            overflow-wrap: anywhere;
+            word-break: normal;
+            hyphens: none;
           }
-          .hero-image {
-            position: static !important;
+
+          #collectionLightbox .lightbox-dialog {
             width: 100% !important;
-            height: min(72vh, 760px) !important;
-            min-height: 520px !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+          }
+
+          #collectionLightbox .lightbox-info {
+            width: 100% !important;
+            max-width: 100% !important;
+            padding-left: 14px !important;
+            padding-right: 14px !important;
+          }
+
+          #collectionLightbox #lightboxTitle {
+            white-space: normal !important;
+            overflow-wrap: anywhere !important;
+          }
+        }
+    </style>
+
+
+    <style id="sv-mobile-text-final-fix">
+        /* ===== CORRECTION MOBILE UNIQUEMENT =====
+           Le PC reste inchangé. Sur téléphone, les textes complets des créations
+           restent visibles sans découpage ni masquage. */
+        @media (max-width:700px) {
+          .collection-card.creation-slot .creation-card-details,
+          .collection-card.creation-slot:not(.creation-open) .creation-card-details {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            height: auto !important;
+            min-height: 0 !important;
+            max-height: none !important;
+            overflow: visible !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+            clip: auto !important;
+            clip-path: none !important;
+            text-indent: 0 !important;
+            white-space: normal !important;
+            overflow-wrap: anywhere !important;
+            word-break: normal !important;
+            hyphens: none !important;
+            -webkit-text-size-adjust: 100% !important;
+          }
+
+          .collection-card.creation-slot .creation-card-detail-line {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            height: auto !important;
+            max-height: none !important;
+            overflow: visible !important;
+            white-space: pre-line !important;
+            overflow-wrap: anywhere !important;
+            word-break: normal !important;
+            hyphens: none !important;
+            text-indent: 0 !important;
+          }
+
+          #collectionLightbox .lightbox-info,
+          #collectionLightbox #lightboxDescription,
+          #collectionLightbox .creation-extra-info,
+          #collectionLightbox .creation-extra-info p {
+            visibility: visible !important;
+            opacity: 1 !important;
+            height: auto !important;
+            max-height: none !important;
+            overflow: visible !important;
+            clip: auto !important;
+            clip-path: none !important;
+            white-space: pre-line !important;
+            overflow-wrap: anywhere !important;
+            word-break: normal !important;
+            hyphens: none !important;
+            text-indent: 0 !important;
+            -webkit-text-size-adjust: 100% !important;
+          }
+
+          #collectionLightbox #lightboxDescription.sv-free-text {
+            display: block !important;
+            white-space: pre-line !important;
+          }
+        }
+    </style>
+
+    <style id="sv-v12-hero-mobile-same-as-pc">
+        /* V12 — TÉLÉPHONE : même image et même cadrage de référence que le PC.
+           On ne change rien au PC. On neutralise uniquement les anciennes règles
+           mobiles qui imposaient une hauteur différente. */
+        @media (max-width:700px) {
+          .hero {
+            position: relative !important;
+            overflow: hidden !important;
+            min-height: min(72vh,760px) !important;
+            height: min(72vh,760px) !important;
+            display: flex !important;
+            align-items: flex-end !important;
+            background: transparent !important;
+          }
+
+          .hero-image {
+            position: absolute !important;
+            inset: 0 !important;
+            display: block !important;
+            width: 100% !important;
+            height: 100% !important;
+            min-height: 0 !important;
             max-height: none !important;
             object-fit: cover !important;
             object-position: center center !important;
+            transform: none !important;
+            z-index: 0 !important;
           }
-        }
-        @media (max-width: 380px) {
-          .hero {
-            min-height: 520px !important;
-            height: min(72vh, 760px) !important;
-          }
-          .hero-image {
-            height: min(72vh, 760px) !important;
-            min-height: 520px !important;
-          }
-        }
-    </style>
 
-    <style id="sv-final-porta-chaves-text-no-overlap">
-        /* PORTE-CHAVES — o texto fica sempre abaixo da foto, nunca por cima dela. */
-        .collection-card.creation-slot .collection-image {
-          position: relative !important;
-          z-index: 1 !important;
-          overflow: hidden !important;
-        }
-        .collection-card.creation-slot .creation-card-details {
-          position: relative !important;
-          z-index: 2 !important;
-          display: block !important;
-          width: 100% !important;
-          height: auto !important;
-          max-height: none !important;
-          min-height: 0 !important;
-          overflow: visible !important;
-          clear: both !important;
-          float: none !important;
-          margin: 12px 0 0 !important;
-          padding: 0 10px 16px !important;
-          box-sizing: border-box !important;
-          white-space: normal !important;
-          word-break: normal !important;
-          overflow-wrap: anywhere !important;
-        }
-        .collection-card.creation-slot .creation-card-detail-line {
-          display: block !important;
-          position: relative !important;
-          height: auto !important;
-          max-height: none !important;
-          overflow: visible !important;
-          white-space: pre-line !important;
-          word-break: normal !important;
-          overflow-wrap: anywhere !important;
-        }
-        @media (max-width:700px) {
-          .collection-card.creation-slot .collection-image,
-          .collection-card.creation-slot .collection-image img {
+          .hero-content {
+            position: relative !important;
+            z-index: 2 !important;
             width: 100% !important;
+            max-width: none !important;
+            left: auto !important;
+            right: auto !important;
+            transform: none !important;
+            margin: 0 auto !important;
+            padding: 0 18px 28px !important;
+            text-align: center !important;
+            box-sizing: border-box !important;
           }
-          .collection-card.creation-slot .creation-card-details {
-            font-size: 16px !important;
-            line-height: 1.65 !important;
-            margin-top: 12px !important;
-            padding-left: 10px !important;
-            padding-right: 10px !important;
-          }
-        }
-    </style>
 
-
-    <style id="sv-auto-creation-text-flow">
-        /* CORREÇÃO AUTOMÁTICA — o texto das criações segue sempre o fluxo normal da página.
-           A imagem mantém o seu dimensionamento existente; o texto nunca é sobreposto. */
-        .collection-card.creation-slot {
-          height: auto !important;
-          min-height: 0 !important;
-          overflow: visible !important;
-        }
-        .collection-card.creation-slot .collection-image {
-          position: relative !important;
-          z-index: 1 !important;
-        }
-        .collection-card.creation-slot .creation-card-details {
-          position: static !important;
-          inset: auto !important;
-          transform: none !important;
-          float: none !important;
-          clear: both !important;
-          height: auto !important;
-          min-height: 0 !important;
-          max-height: none !important;
-          overflow: visible !important;
-          width: 100% !important;
-          box-sizing: border-box !important;
-          z-index: 2 !important;
-        }
-        .collection-card.creation-slot .creation-card-detail-line {
-          position: static !important;
-          height: auto !important;
-          min-height: 0 !important;
-          max-height: none !important;
-          overflow: visible !important;
-          white-space: pre-line !important;
-        }
-    </style>
-
-    <style id="sv-v5-final-pc-mobile-hero-auto">
-        /* V5 — MOBILE = même image/recadrage que PC, sans bande brune ni texte masqué. */
-        @media (max-width:700px){
-          .hero{
-            position:relative !important;
-            display:block !important;
-            width:100% !important;
-            min-height:520px !important;
-            height:min(72vh,760px) !important;
-            overflow:hidden !important;
-            background:transparent !important;
-          }
-          .hero-image{
-            position:static !important;
-            inset:auto !important;
-            display:block !important;
-            width:100% !important;
-            height:min(72vh,760px) !important;
-            min-height:520px !important;
-            max-height:none !important;
-            object-fit:cover !important;
-            object-position:center center !important;
-            transform:none !important;
-            z-index:1 !important;
-          }
-          .hero-content{
-            position:absolute !important;
-            z-index:5 !important;
-            left:0 !important;
-            right:0 !important;
-            bottom:0 !important;
-            width:100% !important;
-            box-sizing:border-box !important;
-            background:transparent !important;
-            pointer-events:none !important;
-          }
-          .hero-content *{
-            position:relative !important;
-            z-index:6 !important;
-          }
-        }
-        @media (max-width:380px){
-          .hero,
-          .hero-image{
-            min-height:520px !important;
-            height:min(72vh,760px) !important;
-          }
-        }
-    </style>
-
-
-    <style id="sv-v6-hero-no-left-clip">
-        /* V6 — le texte du hero ne peut plus être décalé hors de l'écran sur mobile. */
-        @media (max-width:700px){
-          .hero-content{
-            left:0 !important;
-            right:0 !important;
-            width:100% !important;
-            max-width:100% !important;
-            margin:0 !important;
-            transform:none !important;
-            padding-left:18px !important;
-            padding-right:18px !important;
-            box-sizing:border-box !important;
-          }
-          .hero-content *{
-            max-width:100% !important;
-          }
-        }
-        @media (max-width:380px){
-          .hero-content{
-            padding-left:14px !important;
-            padding-right:14px !important;
-          }
-        }
-    </style>
-
-    <style id="sv-v6-music-autoplay">
-        /* V6 — reforço do arranque automático, sem alterar o botão MUTE. */
-        #svAmbientMusic{
-          -webkit-playsinline: true;
-        }
-    </style>
-
-    <style id="sv-v7-hero-auto-natural-centered">
-        /* V7 — MOBILE: imagem principal em tamanho natural, sem recorte; texto sempre centrado. */
-        @media (max-width:700px){
-          .hero{
-            position:relative !important;
-            width:100% !important;
-            height:auto !important;
-            min-height:0 !important;
-            max-height:none !important;
-            overflow:visible !important;
-            display:block !important;
-            background:transparent !important;
-          }
-          .hero-image{
-            position:static !important;
-            display:block !important;
-            width:100% !important;
-            height:auto !important;
-            min-height:0 !important;
-            max-height:none !important;
-            object-fit:contain !important;
-            object-position:center center !important;
-            transform:none !important;
-            margin:0 auto !important;
-          }
-          .hero-content{
-            position:absolute !important;
-            left:0 !important;
-            right:0 !important;
-            bottom:0 !important;
-            width:100% !important;
-            max-width:100% !important;
-            margin:0 auto !important;
-            padding:0 14px 18px !important;
-            box-sizing:border-box !important;
-            text-align:center !important;
-            transform:none !important;
-          }
-          .hero-content,
-          .hero-content *{
-            text-align:center !important;
-            margin-left:auto !important;
-            margin-right:auto !important;
-            max-width:100% !important;
-            box-sizing:border-box !important;
-          }
           .hero-kicker,
           .hero-html-line,
-          .hero-description{
-            width:100% !important;
-            text-align:center !important;
+          .hero-description {
+            text-align: center !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+          }
+
+          .hero-kicker {
+            white-space: normal !important;
+          }
+
+          .hero-html-line {
+            white-space: normal !important;
+          }
+
+          .hero-description {
+            max-width: 92vw !important;
           }
         }
     </style>
 
-    <style id="sv-v9-mobile-hero-clean">
-        /* V9 — MOBILE: a foto fica limpa e o texto passa para baixo da foto.
-           Assim nada tapa o logótipo/imagem e o texto fica sempre centrado. */
-        @media (max-width:700px){
-          .hero{
-            position:relative !important;
-            display:block !important;
-            width:100% !important;
-            height:auto !important;
-            min-height:0 !important;
-            max-height:none !important;
-            overflow:visible !important;
-            background:#1a0d08 !important;
+
+    <style id="sv-v13-mobile-hero-pc-proportion">
+        /* V13 — MOBILE : même proportion visuelle que le HERO PC, sans recadrage vertical agressif. */
+        @media (max-width:700px) {
+          .hero {
+            position: relative !important;
+            width: 100% !important;
+            height: auto !important;
+            min-height: 0 !important;
+            aspect-ratio: 2 / 1 !important;
+            overflow: hidden !important;
+            display: flex !important;
+            align-items: flex-end !important;
+            background: transparent !important;
           }
-          .hero-image{
-            position:static !important;
-            display:block !important;
-            width:100% !important;
-            height:auto !important;
-            min-height:0 !important;
-            max-height:none !important;
-            object-fit:contain !important;
-            object-position:center center !important;
-            margin:0 auto !important;
-            transform:none !important;
+
+          .hero-image {
+            position: absolute !important;
+            inset: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            min-height: 0 !important;
+            max-height: none !important;
+            object-fit: cover !important;
+            object-position: center center !important;
+            transform: none !important;
           }
-          .hero-content{
-            position:static !important;
-            left:auto !important;
-            right:auto !important;
-            bottom:auto !important;
-            width:100% !important;
-            max-width:none !important;
-            margin:0 !important;
-            padding:24px 18px 30px !important;
-            box-sizing:border-box !important;
-            background:#1a0d08 !important;
-            text-align:center !important;
-            transform:none !important;
-            pointer-events:auto !important;
+
+          .hero-content {
+            position: relative !important;
+            z-index: 2 !important;
+            width: 100% !important;
+            max-width: none !important;
+            margin: 0 auto !important;
+            padding: 0 14px 18px !important;
+            box-sizing: border-box !important;
+            text-align: center !important;
           }
-          .hero-content,
-          .hero-content *{
-            text-align:center !important;
-            margin-left:auto !important;
-            margin-right:auto !important;
-            max-width:100% !important;
-            box-sizing:border-box !important;
-          }
+
           .hero-kicker,
           .hero-html-line,
-          .hero-description{
-            width:100% !important;
-            text-align:center !important;
-          }
-        }
-    </style>
-
-
-    <style id="sv-v10-hero-reference-layout">
-        /*
-         V10 — HERO AUTO / CENTRADO
-         Objectif : reproduire la composition de référence :
-         image entière, centrée, texte centré en bas, sans décalage à gauche.
-         Le PC garde son rendu actuel. Sur téléphone, la hauteur de l'image
-         suit automatiquement son ratio naturel : aucune découpe forcée.
-        */
-        @media (max-width:700px){
-          /* Le header se superpose au haut du hero comme sur la référence. */
-          .site-header{
-            position:absolute !important;
-            top:0 !important;
-            left:0 !important;
-            right:0 !important;
-            width:100% !important;
-            z-index:20 !important;
-            background:linear-gradient(to bottom, rgba(18,11,8,.72), rgba(18,11,8,0)) !important;
-            border-bottom:1px solid rgba(255,255,255,.16) !important;
+          .hero-description {
+            text-align: center !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
           }
 
-          .hero{
-            position:relative !important;
-            width:100% !important;
-            height:auto !important;
-            min-height:0 !important;
-            max-height:none !important;
-            overflow:hidden !important;
-            display:block !important;
-            background:#1a0d08 !important;
+          .hero-kicker {
+            font-size: clamp(9px, 2.4vw, 13px) !important;
+            line-height: 1.2 !important;
+            margin-bottom: 5px !important;
           }
 
-          .hero-image{
-            position:static !important;
-            display:block !important;
-            width:100% !important;
-            height:auto !important;
-            min-height:0 !important;
-            max-height:none !important;
-            object-fit:contain !important;
-            object-position:center center !important;
-            margin:0 auto !important;
-            transform:none !important;
+          .hero-html-line {
+            font-size: clamp(10px, 2.8vw, 15px) !important;
+            line-height: 1.3 !important;
+            white-space: normal !important;
           }
 
-          /* Le texte reste dans la largeur de l'écran et centré. */
-          .hero-content{
-            position:absolute !important;
-            left:0 !important;
-            right:0 !important;
-            bottom:0 !important;
-            width:100% !important;
-            max-width:none !important;
-            margin:0 !important;
-            padding:0 14px 12px !important;
-            box-sizing:border-box !important;
-            background:linear-gradient(to top, rgba(18,11,8,.72), rgba(18,11,8,0)) !important;
-            text-align:center !important;
-            transform:none !important;
-            z-index:5 !important;
-            pointer-events:none !important;
-          }
-
-          .hero-content,
-          .hero-content *{
-            text-align:center !important;
-            margin-left:auto !important;
-            margin-right:auto !important;
-            max-width:100% !important;
-            box-sizing:border-box !important;
-          }
-
-          .hero-kicker{
-            width:100% !important;
-            margin-bottom:5px !important;
-            font-size:clamp(8px,2.1vw,12px) !important;
-            line-height:1.2 !important;
-            letter-spacing:.18em !important;
-          }
-
-          .hero-html-line{
-            width:100% !important;
-            font-size:clamp(9px,2.5vw,14px) !important;
-            line-height:1.25 !important;
-            letter-spacing:.05em !important;
-          }
-
-          .hero-description{
-            width:100% !important;
-            margin-top:6px !important;
-            margin-bottom:0 !important;
-            font-size:clamp(9px,2.6vw,15px) !important;
-            line-height:1.3 !important;
+          .hero-description {
+            max-width: 92vw !important;
+            font-size: clamp(10px, 3vw, 15px) !important;
+            line-height: 1.35 !important;
+            margin-top: 6px !important;
           }
         }
     </style>
@@ -4183,7 +3972,7 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
     <button aria-label="Activer ou couper la musique" id="svMusicToggle" title="Muet / Son" type="button">🔊</button>
     <input aria-label="Volume de la musique" class="sv-music-volume" id="svMusicVolume" max="100" min="0" title="Volume" type="range" value="12"/>
 </div>
-<audio id="svAmbientMusic" autoplay="autoplay" loop="" preload="auto" playsinline="playsinline" src="audio/sergio-valente.mp3"></audio>
+<audio id="svAmbientMusic" loop="" preload="auto" src="audio/sergio-valente.mp3"></audio>
 <header class="site-header">
     <div class="header-inner">
         <a class="brand" href="#accueil">
@@ -11621,7 +11410,7 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
      ========================================================= */
 
   const creationTranslationCacheKey =
-    "sergioValenteCreationTranslations_v3";
+    "sergioValenteCreationTranslations_v4";
 
   function normalizeInfoKey(key) {
     return key
@@ -11726,22 +11515,34 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
     });
 
     /*
-       MODE TEXTE LIBRE
-       Si aucun champ connu (title=, materials=, etc.) n'est détecté,
-       tout le contenu du fichier est conservé tel quel.
-       La première ligne devient le titre et le reste le texte de la création.
+       MODE TEXTE LIBRE / SOURCE COMPLETE
+       -----------------------------------
+       On conserve aussi le contenu qui précède un champ reconnu.
+       Exemple réel :
+         Pedra vulcânica
+         Material: Cobre
+         Preço: 10 €
+       L'ancien parseur voyait « Material » et perdait la première ligne.
+       Pour les fiches de créations, le fichier infos.txt doit rester
+       entièrement affichable : aucune ligne du fichier ne doit disparaître.
     */
-    if (recognizedFieldCount === 0) {
-      const freeLines = lines
-        .map(function(line) { return line.trim(); })
-        .filter(function(line) {
-          return line && !/^id\s*[:=]/i.test(line) && !/^(?:lang|langue|language)\s*[:=]/i.test(line);
-        });
+    const sourceLines = lines
+      .map(function(line) { return line.trim(); })
+      .filter(function(line) {
+        return line &&
+          !/^id\s*[:=]/i.test(line) &&
+          !/^(?:lang|langue|language)\s*[:=]/i.test(line);
+      });
 
-      if (freeLines.length) {
-        info.texteLibre = freeLines.join("\n");
-        info.titre = freeLines[0];
-        info.presentation = freeLines.slice(1).join("\n");
+    if (sourceLines.length) {
+      const firstLineLooksLikeField = /^(?:titre|title|nom|name|presentation|description|desc|inspiration|matieres?|materials?|material|details?|detail|langue|language)\s*[:=]/i.test(sourceLines[0]);
+
+      /* Si le fichier n'est pas un pur fichier de champs, conserver
+         exactement toutes ses lignes comme texte libre. */
+      if (recognizedFieldCount === 0 || !firstLineLooksLikeField) {
+        info.texteLibre = sourceLines.join("\n");
+        info.titre = sourceLines[0];
+        info.presentation = sourceLines.slice(1).join("\n");
       }
     }
 
@@ -13274,15 +13075,42 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
   /* =========================================================
      INITIALISATION
      ========================================================= */
+  /*
+     GARDE-TEXTE : après chaque rendu d'une création, le contenu visible
+     doit rester celui de la source infos.txt (ou sa traduction complète),
+     sans dépendre d'un ancien résultat en cache.
+  */
+  function svEnsureCreationTextVisibility() {
+    document.querySelectorAll('.creation-slot[data-info-file]').forEach(function(card) {
+      const details = card.querySelector('.creation-card-details');
+      if (details) {
+        details.style.maxWidth = '100%';
+        details.style.overflowWrap = 'anywhere';
+        details.style.wordBreak = 'normal';
+      }
+    });
+
+    if (currentCreation) {
+      const desc = document.getElementById('lightboxDescription');
+      if (desc) {
+        desc.style.maxWidth = '100%';
+        desc.style.overflow = 'visible';
+        desc.style.whiteSpace = 'pre-wrap';
+        desc.style.overflowWrap = 'anywhere';
+        desc.style.wordBreak = 'normal';
+      }
+    }
+  }
+
   applyLanguage(currentLanguage);
   updateCreationCards();
+  svEnsureCreationTextVisibility();
 
   /* Prépare les cartes puis charge leurs infos sous chaque photo. */
   prepareCreationSlots().then(function () {
     reloadAllCreationInfo();
   });
 </script>
-
 <script id="sv-restore-creation-info-after-return">
     (function () {
       /*
@@ -13777,29 +13605,17 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
           if (audio.volume <= 0) return;
 
           audio.muted = false;
-          var p = audio.play();
-          if (p && p.then) {
-            p.then(function () {
-              updateIcon();
-            }).catch(function () {
-              updateIcon();
-            });
-          }
+          audio.play().then(function () {
+            updateIcon();
+          }).catch(function () {
+            /* Les navigateurs mobiles peuvent bloquer l'autoplay sonore.
+               Dans ce cas, le premier toucher/clic du visiteur démarre la musique. */
+            updateIcon();
+          });
         }
 
-        /* Tentatives au chargement : certains téléphones autorisent
-           l'autoplay après le chargement complet de la page. */
+        /* Au chargement : musique douce à 12 % par défaut. */
         tryStartMusic();
-        window.addEventListener('load', function () {
-          tryStartMusic();
-          setTimeout(tryStartMusic, 500);
-          setTimeout(tryStartMusic, 1500);
-        }, { once: true });
-        document.addEventListener('visibilitychange', function () {
-          if (!document.hidden && audio.paused && audio.volume > 0) {
-            tryStartMusic();
-          }
-        });
 
         /* Si le téléphone bloque l'autoplay, le premier geste du visiteur
            démarre automatiquement la musique au volume choisi. */
@@ -13861,91 +13677,8 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
     })();
 </script>
 
-
-<script id="sv-v5-final-mute-guard">
-    /* V5 — bouton MUTE prioritaire sur téléphone et PC. */
-    (function(){
-      function bindMute(){
-        var toggle=document.getElementById('svMusicToggle');
-        var audio=document.getElementById('svAmbientMusic');
-        var volume=document.getElementById('svMusicVolume');
-        if(!toggle || !audio || !volume || toggle.dataset.svV5Bound==='1') return;
-        toggle.dataset.svV5Bound='1';
-
-        toggle.addEventListener('click',function(e){
-          e.preventDefault();
-          e.stopPropagation();
-          if(e.stopImmediatePropagation) e.stopImmediatePropagation();
-
-          if(audio.paused || audio.muted || audio.volume===0){
-            if(audio.volume===0){
-              audio.volume=0.12;
-              volume.value='12';
-              try{localStorage.setItem('svMusicVolume','12');}catch(_e){}
-            }
-            audio.muted=false;
-            var p=audio.play();
-            if(p && p.catch) p.catch(function(){});
-          }else{
-            audio.pause();
-          }
-          toggle.textContent=(audio.paused || audio.muted || audio.volume===0)?'🔇':'🔊';
-        },true);
-      }
-      if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bindMute,{once:true});
-      else bindMute();
-    })();
-</script>
-
-
-<script id="sv-v8-music-auto-strong">
-    (function(){
-      function forceAutoMusic(){
-        var audio=document.getElementById('svAmbientMusic');
-        if(!audio) return;
-
-        var vol=parseFloat(audio.dataset.svAutoVolume || '0.12');
-        if(!(vol>0)) vol=0.12;
-        audio.volume=vol;
-        audio.muted=false;
-
-        function playNow(){
-          if(audio.volume<=0) return;
-          try{
-            var p=audio.play();
-            if(p && p.catch) p.catch(function(){});
-          }catch(e){}
-        }
-
-        /* Lancement automatique dès que le navigateur le permet. */
-        playNow();
-
-        if(document.readyState!=='complete'){
-          window.addEventListener('load', playNow, {once:true});
-        }
-        setTimeout(playNow, 250);
-        setTimeout(playNow, 1000);
-        setTimeout(playNow, 2500);
-
-        /* Si le navigateur mobile interdit le son sans geste,
-           le premier toucher/clic lance immédiatement la musique. */
-        function unlock(){
-          if(audio.paused && !audio.muted && audio.volume>0) playNow();
-        }
-        ['touchstart','pointerdown','click'].forEach(function(ev){
-          document.addEventListener(ev, unlock, {passive:true});
-        });
-      }
-
-      if(document.readyState==='loading'){
-        document.addEventListener('DOMContentLoaded', forceAutoMusic, {once:true});
-      }else{
-        forceAutoMusic();
-      }
-    })();
-</script>
-
 </body>
 </html>
 ```
 ````
+`````
