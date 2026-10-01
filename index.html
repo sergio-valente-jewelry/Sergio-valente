@@ -14075,10 +14075,11 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
 </style>
 
 
-<style id="sv-hero-telephone-sans-espace">
+<style id="sv-hero-telephone-sans-recouvrement">
     /* =========================================================
        HERO — TÉLÉPHONE UNIQUEMENT
-       Le PC reste totalement inchangé.
+       Image complète puis texte : aucun recouvrement.
+       PC et porte-clés inchangés.
        ========================================================= */
     @media (max-width:700px){
 
@@ -14086,10 +14087,9 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
         height:auto !important;
         min-height:0 !important;
         max-height:none !important;
-        overflow:hidden !important;
+        overflow:visible !important;
         display:block !important;
         position:relative !important;
-        background:transparent !important;
       }
 
       .hero-image{
@@ -14106,16 +14106,13 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
       }
 
       .hero-content{
-        position:absolute !important;
-        z-index:3 !important;
-        left:0 !important;
-        right:0 !important;
-        bottom:0 !important;
+        position:static !important;
+        z-index:auto !important;
         width:100% !important;
         max-width:100% !important;
         box-sizing:border-box !important;
         margin:0 !important;
-        padding:0 18px 24px !important;
+        padding:22px 18px 28px !important;
         text-align:center !important;
         background:transparent !important;
       }
