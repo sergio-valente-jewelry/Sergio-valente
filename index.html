@@ -1,4 +1,4 @@
-
+````
 
 <!DOCTYPE html>
 
@@ -3705,11 +3705,233 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
     <style id="sv-mobile-final-v3">
         /* V3 MOBILE UNIQUEMENT : image hero complète + textes complets. PC inchangé. */
         @media (max-width:700px){
-          .hero-image{object-fit:contain !important; object-position:center center !important; background:transparent !important;}
+          .hero-image{object-fit:cover !important; object-position:center center !important;}
           .collection-card.creation-slot .creation-card-details{display:block !important; visibility:visible !important; opacity:1 !important; height:auto !important; max-height:none !important; overflow:visible !important; white-space:pre-line !important; -webkit-text-size-adjust:100% !important; text-rendering:optimizeLegibility !important;}
           .collection-card.creation-slot .creation-card-detail-line{display:block !important; visibility:visible !important; opacity:1 !important; white-space:pre-line !important; overflow:visible !important;}
         }
     </style>
+
+    <style id="sv-v5-mobile-text-mute-fix">
+        @media (max-width:700px){
+          .collection-card.creation-slot .creation-card-details{
+            display:block !important;
+            visibility:visible !important;
+            opacity:1 !important;
+            height:auto !important;
+            max-height:none !important;
+            overflow:visible !important;
+            width:100% !important;
+            max-width:100% !important;
+            white-space:pre-line !important;
+            overflow-wrap:normal !important;
+            word-break:normal !important;
+            hyphens:none !important;
+            text-overflow:clip !important;
+            -webkit-text-size-adjust:100% !important;
+            text-rendering:optimizeLegibility !important;
+          }
+          .collection-card.creation-slot .creation-card-details *{
+            white-space:pre-line !important;
+            overflow-wrap:normal !important;
+            word-break:normal !important;
+            hyphens:none !important;
+          }
+        }
+    </style>
+
+    <style id="sv-hero-exact-pc-final">
+        /* HERO FINAL — téléphone = même comportement que PC */
+        .hero {
+          position: relative !important;
+          overflow: hidden !important;
+          min-height: 520px !important;
+          height: min(72vh, 760px) !important;
+          display: block !important;
+          background: transparent !important;
+        }
+        .hero-image {
+          position: static !important;
+          inset: auto !important;
+          display: block !important;
+          width: 100% !important;
+          height: min(72vh, 760px) !important;
+          min-height: 520px !important;
+          max-height: none !important;
+          object-fit: cover !important;
+          object-position: center center !important;
+          transform: none !important;
+        }
+        @media (max-width: 1024px) {
+          .hero-image {
+            height: min(60vh, 620px) !important;
+            min-height: 430px !important;
+          }
+        }
+        @media (max-width: 700px) {
+          .hero {
+            min-height: 520px !important;
+            height: min(72vh, 760px) !important;
+            display: block !important;
+          }
+          .hero-image {
+            position: static !important;
+            width: 100% !important;
+            height: min(72vh, 760px) !important;
+            min-height: 520px !important;
+            max-height: none !important;
+            object-fit: cover !important;
+            object-position: center center !important;
+          }
+        }
+        @media (max-width: 380px) {
+          .hero {
+            min-height: 520px !important;
+            height: min(72vh, 760px) !important;
+          }
+          .hero-image {
+            height: min(72vh, 760px) !important;
+            min-height: 520px !important;
+          }
+        }
+    </style>
+
+    <style id="sv-final-porta-chaves-text-no-overlap">
+        /* PORTE-CHAVES — o texto fica sempre abaixo da foto, nunca por cima dela. */
+        .collection-card.creation-slot .collection-image {
+          position: relative !important;
+          z-index: 1 !important;
+          overflow: hidden !important;
+        }
+        .collection-card.creation-slot .creation-card-details {
+          position: relative !important;
+          z-index: 2 !important;
+          display: block !important;
+          width: 100% !important;
+          height: auto !important;
+          max-height: none !important;
+          min-height: 0 !important;
+          overflow: visible !important;
+          clear: both !important;
+          float: none !important;
+          margin: 12px 0 0 !important;
+          padding: 0 10px 16px !important;
+          box-sizing: border-box !important;
+          white-space: normal !important;
+          word-break: normal !important;
+          overflow-wrap: anywhere !important;
+        }
+        .collection-card.creation-slot .creation-card-detail-line {
+          display: block !important;
+          position: relative !important;
+          height: auto !important;
+          max-height: none !important;
+          overflow: visible !important;
+          white-space: pre-line !important;
+          word-break: normal !important;
+          overflow-wrap: anywhere !important;
+        }
+        @media (max-width:700px) {
+          .collection-card.creation-slot .collection-image,
+          .collection-card.creation-slot .collection-image img {
+            width: 100% !important;
+          }
+          .collection-card.creation-slot .creation-card-details {
+            font-size: 16px !important;
+            line-height: 1.65 !important;
+            margin-top: 12px !important;
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+        }
+    </style>
+
+
+    <style id="sv-auto-creation-text-flow">
+        /* CORREÇÃO AUTOMÁTICA — o texto das criações segue sempre o fluxo normal da página.
+           A imagem mantém o seu dimensionamento existente; o texto nunca é sobreposto. */
+        .collection-card.creation-slot {
+          height: auto !important;
+          min-height: 0 !important;
+          overflow: visible !important;
+        }
+        .collection-card.creation-slot .collection-image {
+          position: relative !important;
+          z-index: 1 !important;
+        }
+        .collection-card.creation-slot .creation-card-details {
+          position: static !important;
+          inset: auto !important;
+          transform: none !important;
+          float: none !important;
+          clear: both !important;
+          height: auto !important;
+          min-height: 0 !important;
+          max-height: none !important;
+          overflow: visible !important;
+          width: 100% !important;
+          box-sizing: border-box !important;
+          z-index: 2 !important;
+        }
+        .collection-card.creation-slot .creation-card-detail-line {
+          position: static !important;
+          height: auto !important;
+          min-height: 0 !important;
+          max-height: none !important;
+          overflow: visible !important;
+          white-space: pre-line !important;
+        }
+    </style>
+
+    <style id="sv-v5-final-pc-mobile-hero-auto">
+        /* V5 — MOBILE = même image/recadrage que PC, sans bande brune ni texte masqué. */
+        @media (max-width:700px){
+          .hero{
+            position:relative !important;
+            display:block !important;
+            width:100% !important;
+            min-height:520px !important;
+            height:min(72vh,760px) !important;
+            overflow:hidden !important;
+            background:transparent !important;
+          }
+          .hero-image{
+            position:static !important;
+            inset:auto !important;
+            display:block !important;
+            width:100% !important;
+            height:min(72vh,760px) !important;
+            min-height:520px !important;
+            max-height:none !important;
+            object-fit:cover !important;
+            object-position:center center !important;
+            transform:none !important;
+            z-index:1 !important;
+          }
+          .hero-content{
+            position:absolute !important;
+            z-index:5 !important;
+            left:0 !important;
+            right:0 !important;
+            bottom:0 !important;
+            width:100% !important;
+            box-sizing:border-box !important;
+            background:transparent !important;
+            pointer-events:none !important;
+          }
+          .hero-content *{
+            position:relative !important;
+            z-index:6 !important;
+          }
+        }
+        @media (max-width:380px){
+          .hero,
+          .hero-image{
+            min-height:520px !important;
+            height:min(72vh,760px) !important;
+          }
+        }
+    </style>
+
 </head>
 <body>
 <div aria-label="Contrôle de la musique" class="sv-music-control">
@@ -12815,71 +13037,7 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
     reloadAllCreationInfo();
   });
 </script>
-<script id="sv-music-script">
-    (function () {
-    function initMusic() {
-      const audio = document.getElementById("svAmbientMusic");
-      const toggle = document.getElementById("svMusicToggle");
-      const volume = document.getElementById("svMusicVolume");
 
-      if (!audio || !toggle || !volume) return;
-
-      audio.volume = Number(volume.value || 12) / 100;
-
-      function updateIcon() {
-        toggle.textContent = audio.paused || audio.muted || audio.volume === 0
-          ? "🔇"
-          : "🔊";
-      }
-
-      // Coupe réellement la lecture. On utilise pause() en plus de muted()
-      // pour garantir que le son s'arrête même si un autre comportement du navigateur intervient.
-      toggle.addEventListener("click", function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        if (!audio.paused && !audio.muted) {
-          audio.muted = true;
-          audio.pause();
-        } else {
-          audio.muted = false;
-          audio.play().catch(function () {});
-        }
-
-        updateIcon();
-      });
-
-      volume.addEventListener("input", function (event) {
-        event.stopPropagation();
-
-        const value = Math.max(0, Math.min(100, Number(event.target.value) || 0));
-        audio.volume = value / 100;
-
-        if (value === 0) {
-          audio.muted = true;
-          audio.pause();
-        } else {
-          audio.muted = false;
-          audio.play().catch(function () {});
-        }
-
-        updateIcon();
-      });
-
-      audio.addEventListener("volumechange", updateIcon);
-      audio.addEventListener("play", updateIcon);
-      audio.addEventListener("pause", updateIcon);
-
-      updateIcon();
-    }
-
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", initMusic);
-    } else {
-      initMusic();
-    }
-  })();
-</script>
 <script id="sv-restore-creation-info-after-return">
     (function () {
       /*
@@ -13443,6 +13601,42 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
       } else {
         setupFinalMusic();
       }
+    })();
+</script>
+
+
+<script id="sv-v5-final-mute-guard">
+    /* V5 — bouton MUTE prioritaire sur téléphone et PC. */
+    (function(){
+      function bindMute(){
+        var toggle=document.getElementById('svMusicToggle');
+        var audio=document.getElementById('svAmbientMusic');
+        var volume=document.getElementById('svMusicVolume');
+        if(!toggle || !audio || !volume || toggle.dataset.svV5Bound==='1') return;
+        toggle.dataset.svV5Bound='1';
+
+        toggle.addEventListener('click',function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          if(e.stopImmediatePropagation) e.stopImmediatePropagation();
+
+          if(audio.paused || audio.muted || audio.volume===0){
+            if(audio.volume===0){
+              audio.volume=0.12;
+              volume.value='12';
+              try{localStorage.setItem('svMusicVolume','12');}catch(_e){}
+            }
+            audio.muted=false;
+            var p=audio.play();
+            if(p && p.catch) p.catch(function(){});
+          }else{
+            audio.pause();
+          }
+          toggle.textContent=(audio.paused || audio.muted || audio.volume===0)?'🔇':'🔊';
+        },true);
+      }
+      if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bindMute,{once:true});
+      else bindMute();
     })();
 </script>
 
