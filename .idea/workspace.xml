@@ -4,7 +4,27 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f646ba40-51ed-4b2c-8ee2-3bb92921885d" name="Changes" comment="" />
+    <list default="true" id="f646ba40-51ed-4b2c-8ee2-3bb92921885d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index_30_19h08.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/produits/colliers/creation-01/infos.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/produits/colliers/creation-01/photo-01.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/produits/colliers/creation-01/photo-02.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/produits/colliers/creation-01/photo-03.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/produits/colliers/creation-01/photo-04.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/produits/colliers/creation-01/photo-05.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/produits/colliers/creation-01/photo-06.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/produits/colliers/creation-01/photo-07.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/produits/colliers/creation-01/photo-08.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/produits/colliers/creation-02/infos.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/produits/porte clefs/creation-01/infos.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/produits/porte clefs/creation-01/photo-01.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/produits/porte clefs/creation-01/photo-02.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/produits/porte clefs/creation-02/infos.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/produits/porte clefs/creation-02/photo-01.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/produits/porte clefs/creation-02/photo-02.jpg" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
