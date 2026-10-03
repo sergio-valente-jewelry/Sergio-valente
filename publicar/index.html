@@ -145,6 +145,16 @@ details ol{margin:0 0 12px;padding-left:20px;line-height:1.55;font-size:15px}
 .tpl{background:var(--bg);border-radius:12px;padding:14px 16px;font-size:15px;line-height:1.6;color:#3D3832;white-space:pre-line}
 .spin{width:44px;height:44px;border-radius:50%;border:4px solid var(--line);border-top-color:var(--accent);animation:sp 1s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
+.glist{display:flex;flex-direction:column;gap:10px}
+.gitem{display:flex;gap:12px;padding:12px;border-radius:14px;background:#fff;border:1px solid #E5E0D8;align-items:center}
+.gitem img{width:72px;height:72px;border-radius:10px;object-fit:cover;background:var(--sand);flex-shrink:0}
+.gitem .gt{font-weight:600;font-size:16px;line-height:1.3;overflow-wrap:anywhere}
+.gitem .gb{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.gbtn{min-height:44px;padding:0 14px;border-radius:12px;font:inherit;font-size:15px;font-weight:600;cursor:pointer}
+.gbtn.edit{background:var(--tint);color:var(--accent-d);border:0}
+.gbtn.sold{background:#fff;color:var(--err-d);border:1px solid #E8B4A6}
+.chips.scroll{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}
+.chips.scroll .chip{white-space:nowrap;flex-shrink:0}
 .hidden{display:none!important}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation-duration:3s!important}}
 </style>
@@ -178,6 +188,7 @@ details ol{margin:0 0 12px;padding-left:20px;line-height:1.55;font-size:15px}
       </div>
     </div>
     <button class="btn primary wide big" type="button" id="newBtn" data-ic="plus">Nova criação</button>
+    <button class="btn ghost wide big" type="button" id="manageBtn" data-ic="doc">As minhas criações</button>
     <div id="recentBox" class="hidden" style="display:flex;flex-direction:column;gap:10px;margin-top:6px">
       <h2>Últimas publicações</h2>
       <ul class="recent" id="recentList"></ul>
@@ -188,6 +199,21 @@ details ol{margin:0 0 12px;padding-left:20px;line-height:1.55;font-size:15px}
         <button class="linkbtn quiet" type="button" data-support>Assistência técnica</button>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- GERIR -->
+<section class="screen" id="s-gerir" data-help="Escolha a categoria. Toque em «Alterar» para mudar as fotos ou o texto, ou em «Vendida» para tirar a criação do site. As outras criações sobem um lugar, sem deixar buracos.">
+  <div class="body">
+    <h1>As minhas criações</h1>
+    <p class="lead">Alterar ou tirar do site o que já vendeu.</p>
+    <div class="chips scroll" id="gCats"></div>
+    <div class="alert hidden" id="gAlert" role="alert"><span data-ic="alert"></span><span></span></div>
+    <div class="glist" id="gList"></div>
+  </div>
+  <div class="bar">
+    <button class="btn ghost" type="button" id="gBack">Voltar</button>
+    <button class="btn primary" type="button" id="gReload" data-ic="reset">Atualizar</button>
   </div>
 </section>
 
@@ -303,11 +329,12 @@ details ol{margin:0 0 12px;padding-left:20px;line-height:1.55;font-size:15px}
 <section class="screen" id="s-publicado">
   <div class="center">
     <div class="badge ok"><span data-ic="check" data-s="52"></span></div>
-    <h1 style="margin:0;font-size:32px">Publicado!</h1>
+    <h1 style="margin:0;font-size:32px" id="pubH">Publicado!</h1>
     <p id="pubTxt" style="font-size:17px;color:#3D3832"></p>
-    <p class="small">Aparece no site dentro de alguns minutos.</p>
+    <p class="small">O site atualiza-se dentro de alguns minutos.</p>
   </div>
   <div class="stack">
+    <button class="btn primary hidden" type="button" id="manageAgain" data-ic="doc">Voltar às minhas criações</button>
     <button class="btn primary" type="button" id="againBtn" data-ic="plus">Adicionar outra criação</button>
     <button class="btn ghost" type="button" id="shareBtn" data-ic="share">Partilhar</button>
     <button class="btn ghost" type="button" id="siteBtn" data-ic="eye">Ver no site</button>
@@ -421,6 +448,19 @@ details ol{margin:0 0 12px;padding-left:20px;line-height:1.55;font-size:15px}
   </div>
 </div>
 
+<div class="sheet-wrap" id="sheetDel" role="dialog" aria-modal="true" aria-labelledby="delTitle">
+  <div class="sheet">
+    <div class="grab"></div>
+    <h2 id="delTitle">Tirar do site?</h2>
+    <div class="summary"><img id="delImg" alt=""><div class="info"><span class="ttl" id="delT"></span><span class="small" id="delCat"></span></div></div>
+    <p>A criação e as fotos deixam de aparecer no site. As outras criações desta categoria sobem um lugar, sem deixar buracos.</p>
+    <div style="display:flex;gap:10px">
+      <button class="btn ghost" type="button" data-close>Cancelar</button>
+      <button class="btn primary" type="button" id="delGo" style="flex:1;background:var(--err)">Sim, tirar do site</button>
+    </div>
+  </div>
+</div>
+
 <div class="sheet-wrap" id="sheetSupport" role="dialog" aria-modal="true" aria-labelledby="supTitle">
   <div class="sheet">
     <div class="grab"></div>
@@ -521,7 +561,7 @@ const cleanPrefix=c=>{const p=(c||cfg).prefix.replace(/^\/+|\/+$/g,'').trim();re
 /* ---------- Estado e rascunho ---------- */
 let S=fresh();
 const thumbs={};
-function fresh(){return {cat:null,photos:[],titulo:'',descricao:'',precos:'',step:'s-categoria'}}
+function fresh(){return {cat:null,photos:[],titulo:'',descricao:'',precos:'',step:'s-categoria',mode:'new'}}
 const hasContent=()=>!!(S.cat||S.photos.length||S.titulo.trim()||S.descricao.trim()||S.precos.trim());
 
 const DB={
@@ -534,6 +574,7 @@ const DB={
 let draftTimer=null;
 function saveDraftSoon(){clearTimeout(draftTimer);draftTimer=setTimeout(saveDraft,400)}
 async function saveDraft(){
+  if(S.mode==='edit')return;
   try{
     if(!hasContent()){await DB.del('rascunho');return}
     await DB.set('rascunho',{cat:S.cat,photos:S.photos.map(p=>({id:p.id,blob:p.blob,rot:p.rot,square:p.square,enhance:p.enhance})),titulo:S.titulo,descricao:S.descricao,precos:S.precos,step:S.step,at:Date.now()});
@@ -543,7 +584,7 @@ async function clearDraft(){clearTimeout(draftTimer);try{await DB.del('rascunho'
 function resetState(){Object.keys(thumbs).forEach(k=>{URL.revokeObjectURL(thumbs[k]);delete thumbs[k]});S=fresh();fillFields()}
 
 /* ---------- Navegação ---------- */
-const PREV={'s-categoria':'s-inicio','s-fotos':'s-categoria','s-texto':'s-fotos','s-ver':'s-texto','s-confirmar':'s-ver','s-config':'s-inicio','s-erro':'s-confirmar','s-publicado':'s-inicio'};
+const PREV={'s-gerir':'s-inicio','s-categoria':'s-inicio','s-fotos':'s-categoria','s-texto':'s-fotos','s-ver':'s-texto','s-confirmar':'s-ver','s-config':'s-inicio','s-erro':'s-confirmar','s-publicado':'s-inicio'};
 const FLOW=['s-categoria','s-fotos','s-texto','s-ver','s-confirmar'];
 let current=null, busy=false;
 const onShow={};
@@ -560,7 +601,7 @@ function show(id,push=true){
   window.scrollTo(0,0);
   if(onShow[id])onShow[id]();
 }
-function goBack(){const p=PREV[current];if(p)show(p,false)}
+function goBack(){const p=(S.mode==='edit'&&current==='s-fotos')?'s-gerir':PREV[current];if(p)show(p,false)}
 window.addEventListener('popstate',()=>{if(busy){try{history.pushState({},'')}catch(e){}return}if(closeTopSheet())return;goBack()});
 $$('[data-back]').forEach(b=>b.addEventListener('click',()=>{if(history.state)history.back();else goBack()}));
 
@@ -634,6 +675,7 @@ async function makeThumb(p){const b=await renderPhoto(p,420,{quality:0.8});if(th
 
 /* ---------- Início ---------- */
 onShow['s-inicio']=async()=>{
+  if(S.mode==='edit')resetState();
   renderRecent();
   let d=null;
   if(hasContent())d={cat:S.cat,photos:S.photos};
@@ -822,7 +864,10 @@ onShow['s-confirmar']=()=>{
   $('#sumT').textContent=S.titulo.trim();
   $('#sumCat').textContent=catName(S.cat);
   $('#sumP').textContent=(S.precos.trim().split('\n')[0]||'');
-  $('#safeTxt').innerHTML=`Vai ser adicionada no fim da categoria <strong>${esc(catName(S.cat))}</strong>. As criações que já estão no site não são tocadas.`;
+  const ed=S.mode==='edit';
+  $('#safeTxt').innerHTML=ed?'As alterações substituem a ficha atual desta criação no site. As outras criações não são tocadas.':`Vai ser adicionada no fim da categoria <strong>${esc(catName(S.cat))}</strong>. As criações que já estão no site não são tocadas.`;
+  $('#publishBtn').lastChild.textContent=ed?'Guardar alterações':'Publicar no site';
+  $('#zipBtn').classList.toggle('hidden',ed);
 };
 $('#publishBtn').onclick=publish;
 $('#zipBtn').onclick=downloadZip;
@@ -853,8 +898,10 @@ async function buildFiles(onp){
   const out=[],n=S.photos.length;
   for(let i=0;i<n;i++){
     onp&&onp(i+1,n);
-    const b=await renderPhoto(S.photos[i],PHOTO_MAX_PX,{watermark:cfg.watermark,maxBytes:PHOTO_MAX_BYTES});
-    out.push({name:`photo-${padPhoto(i+1)}.jpg`,data:new Uint8Array(await b.arrayBuffer()),blob:b});
+    const p=S.photos[i], name=`photo-${padPhoto(i+1)}.jpg`;
+    if(p.orig&&!p.rot&&!p.square&&!p.enhance){out.push({name,data:new Uint8Array(await p.blob.arrayBuffer()),blob:p.blob,sha:p.sha});continue}
+    const b=await renderPhoto(p,PHOTO_MAX_PX,{watermark:cfg.watermark&&!p.orig,maxBytes:PHOTO_MAX_BYTES});
+    out.push({name,data:new Uint8Array(await b.arrayBuffer()),blob:b});
   }
   out.push({name:'infos.txt',data:utf8(infosText())});
   return out;
@@ -888,8 +935,8 @@ async function commit(files,onp){
   const tree=[];
   for(let i=0;i<files.length;i++){
     onp(i,files.length);
-    const b=await gh(`${base}/git/blobs`,{method:'POST',body:JSON.stringify({content:b64(files[i].data),encoding:'base64'})});
-    tree.push({path:`${dir}/${files[i].name}`,mode:'100644',type:'blob',sha:b.sha});
+    const sha=files[i].sha||(await gh(`${base}/git/blobs`,{method:'POST',body:JSON.stringify({content:b64(files[i].data),encoding:'base64'})})).sha;
+    tree.push({path:`${dir}/${files[i].name}`,mode:'100644',type:'blob',sha});
   }
   onp(files.length,files.length);
   const t=await gh(`${base}/git/trees`,{method:'POST',body:JSON.stringify({base_tree:cm.tree.sha,tree})});
@@ -900,35 +947,51 @@ async function commit(files,onp){
 function setProg(f,txt){$('#meter').style.width=Math.round(f*100)+'%';$('#progTxt').textContent=txt}
 let lastPub=null;
 async function publish(){
+  retryFn=publish;errBackTo='s-confirmar';errZipOk=S.mode!=='edit';
   if(!configured()){showErr('config');return}
   if(navigator.onLine===false){showErr('offline');return}
+  const editing=S.mode==='edit';
   busy=true;show('s-publicando');setProg(0.02,'A preparar as fotos…');
   try{
     const files=await buildFiles((i,n)=>setProg(0.02+0.43*(i/n),`A preparar as fotos (${i} de ${n})…`));
-    let res,attempt=0;
+    const onp=(i,n)=>setProg(0.45+0.5*(i/n),'A enviar para o site…');
+    let attempt=0;
     for(;;){
-      try{res=await commit(files,(i,n)=>setProg(0.45+0.5*(i/n),'A enviar para o site…'));break}
+      try{if(editing)await saveEdit(files,onp);else await commit(files,onp);break}
       catch(e){if((e.status===422||e.status===409)&&attempt<2){attempt++;continue}throw e}
     }
     setProg(1,'Feito.');
-    const cover=files[0].blob;
-    await addRecent(cover);
-    lastPub={titulo:S.titulo.trim(),cat:S.cat,cover};
-    await clearDraft();resetState();
+    const cover=files[0].blob, titulo=S.titulo.trim(), cat=S.cat;
     busy=false;
-    $('#pubTxt').innerHTML=`A nova criação foi adicionada em <strong>${esc(catName(lastPub.cat))}</strong>.`;
-    $('#siteBtn').classList.toggle('hidden',!cfg.site.trim());
-    show('s-publicado');
-  }catch(e){
-    busy=false;
-    if(e instanceof TypeError||navigator.onLine===false)showErr('offline');
-    else if(e.code==='full')showErr('full');
-    else if(e.status===401)showErr('token');
-    else if(e.status===403)showErr('perm');
-    else if(e.status===404)showErr('notfound');
-    else showErr('other');
-  }
+    if(editing){
+      resetState();
+      setDone('Guardado!',`As alterações a <strong>${esc(titulo)}</strong> foram guardadas.`,{manage:true,share:false});
+    }else{
+      await addRecent(cover);
+      lastPub={titulo,cat,cover};
+      await clearDraft();resetState();
+      setDone('Publicado!',`A nova criação foi adicionada em <strong>${esc(catName(cat))}</strong>.`,{manage:false,share:true});
+    }
+  }catch(e){busy=false;handleOpErr(e)}
 }
+function handleOpErr(e){
+  if(e instanceof TypeError||navigator.onLine===false)showErr('offline');
+  else if(e.code==='full')showErr('full');
+  else if(e.code==='gone')showErr('gone');
+  else if(e.status===401)showErr('token');
+  else if(e.status===403)showErr('perm');
+  else if(e.status===404)showErr('notfound');
+  else showErr('other');
+}
+function setDone(h,html,o){
+  $('#pubH').textContent=h;$('#pubTxt').innerHTML=html;
+  $('#shareBtn').classList.toggle('hidden',!o.share);
+  $('#manageAgain').classList.toggle('hidden',!o.manage);
+  $('#againBtn').classList.toggle('hidden',!!o.manage);
+  $('#siteBtn').classList.toggle('hidden',!cfg.site.trim());
+  show('s-publicado');
+}
+let retryFn=()=>publish(),errBackTo='s-confirmar',errZipOk=true;
 const ERRS={
   offline:['wifioff','warn','Sem internet','Não foi possível publicar agora. Verifique a ligação e tente outra vez.'],
   config:['lock','warn','A ferramenta não está pronta','Ainda não está ligada ao site. Toque em «Pedir ajuda» para contactar a assistência técnica.'],
@@ -936,6 +999,7 @@ const ERRS={
   perm:['lock','bad','Sem permissão para publicar','Tente outra vez daqui a pouco. Se continuar, toque em «Pedir ajuda».'],
   notfound:['alert','bad','Site não encontrado','Toque em «Pedir ajuda» para contactar a assistência técnica.'],
   full:['alert','bad','Esta categoria está cheia','Já tem 100 criações, o máximo que o site mostra. Peça a quem gere o site para libertar espaço.'],
+  gone:['alert','bad','Esta criação já não existe','Pode já ter sido tirada do site. Volte às suas criações e toque em «Atualizar».'],
   other:['alert','bad','Não foi possível publicar','Tente outra vez daqui a pouco. Se voltar a acontecer, toque em «Pedir ajuda».']
 };
 function showErr(k){
@@ -943,17 +1007,164 @@ function showErr(k){
   const bd=$('#errBadge');bd.className='badge '+tone;bd.innerHTML=ic(icn,46);
   $('#errT').textContent=t;$('#errM').textContent=m;
   lastErr=`Erro: ${t}. ${m}`+(S.cat?`\nCategoria: ${catName(S.cat)}`:'')+(S.titulo.trim()?`\nCriação: ${S.titulo.trim()}`:'');
-  $('#retryBtn').classList.toggle('hidden',k==='config'||k==='full');
+  $('#retryBtn').classList.toggle('hidden',k==='config'||k==='full'||k==='gone');
+  $('#errZip').classList.toggle('hidden',!errZipOk);
   show('s-erro');
 }
 let lastErr='';
-$('#retryBtn').onclick=publish;
+$('#retryBtn').onclick=()=>retryFn();
 $('#errHelp').onclick=()=>openSupport(lastErr);
 $('#errZip').onclick=downloadZip;
-$('#errBack').onclick=()=>show('s-confirmar');
+$('#errBack').onclick=()=>show(errBackTo);
+
+/* ---------- Gerir criações (alterar / tirar do site) ---------- */
+let gCat='aneis',gData=null,gTok=0;
+const thumbCache={};
+const PHOTO_RE=/^photo-(\d+)\.(jpe?g|png|webp)$/i;
+async function blobBytes(sha){
+  const r=await gh(`${repoBase()}/git/blobs/${sha}`);
+  const bin=atob(String(r.content).replace(/\s/g,''));const u=new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return u;
+}
+function photosOf(it){return it.files.map(f=>{const m=PHOTO_RE.exec(f.name);return m?Object.assign({},f,{k:+m[1]}):null}).filter(Boolean).sort((a,b)=>a.k-b.k)}
+function titleOf(t){return ((t||'').replace(/^\uFEFF/,'').split(/\r?\n/).find(l=>l.trim())||'').trim()}
+async function readCategory(cat){
+  const base=repoBase(),head=await headSha();
+  const cm=await gh(`${base}/git/commits/${head}`);
+  const tr=await gh(`${base}/git/trees/${cm.tree.sha}?recursive=1`);
+  if(tr.truncated){const e=new Error('trunc');e.code='trunc';throw e}
+  const pre=cleanPrefix()+cat+'/',groups=new Map();
+  for(const t of tr.tree){
+    if(t.type!=='blob'||!t.path.startsWith(pre))continue;
+    const m=/^creation-(\d+)\/([^/]+)$/.exec(t.path.slice(pre.length));if(!m)continue;
+    const n=+m[1];if(!groups.has(n))groups.set(n,{n,folder:'creation-'+m[1],files:[]});
+    groups.get(n).files.push({name:m[2],sha:t.sha,path:t.path});
+  }
+  return {head,rootTree:cm.tree.sha,pre,items:[...groups.values()].sort((a,b)=>a.n-b.n)};
+}
+/* Monta a categoria final com a numeração seguida 01, 02, 03… (sem buracos). */
+function compactEntries(d,items){
+  const final=new Map(),old=new Map();
+  items.forEach((it,i)=>{const folder='creation-'+padCreation(i+1);it.files.forEach(f=>final.set(`${d.pre}${folder}/${f.name}`,f.sha))});
+  d.items.forEach(it=>it.files.forEach(f=>old.set(f.path,f.sha)));
+  const out=[];
+  for(const [p,sha] of final)if(old.get(p)!==sha)out.push({path:p,mode:'100644',type:'blob',sha});
+  for(const p of old.keys())if(!final.has(p))out.push({path:p,mode:'100644',type:'blob',sha:null});
+  return out;
+}
+async function commitEntries(d,entries,msg){
+  if(!entries.length)return;
+  const base=repoBase();
+  const t=await gh(`${base}/git/trees`,{method:'POST',body:JSON.stringify({base_tree:d.rootTree,tree:entries})});
+  const c=await gh(`${base}/git/commits`,{method:'POST',body:JSON.stringify({message:msg,tree:t.sha,parents:[d.head]})});
+  await gh(`${base}/git/refs/heads/${encPath(cfg.branch.trim()||'main')}`,{method:'PATCH',body:JSON.stringify({sha:c.sha,force:false})});
+}
+let editCtx=null;
+async function saveEdit(files,onp){
+  const d=await readCategory(editCtx.cat);
+  const target=d.items.find(x=>x.folder===editCtx.folder);
+  if(!target){const e=new Error('gone');e.code='gone';throw e}
+  const nf=[];
+  for(let i=0;i<files.length;i++){
+    onp(i,files.length);
+    const sha=files[i].sha||(await gh(`${repoBase()}/git/blobs`,{method:'POST',body:JSON.stringify({content:b64(files[i].data),encoding:'base64'})})).sha;
+    nf.push({name:files[i].name,sha});
+  }
+  onp(files.length,files.length);
+  /* outros ficheiros da pasta (por exemplo vídeos) ficam como estão */
+  target.files.forEach(f=>{if(!PHOTO_RE.test(f.name)&&f.name!=='infos.txt')nf.push({name:f.name,sha:f.sha})});
+  const items=d.items.map(x=>x===target?{files:nf}:x);
+  await commitEntries(d,compactEntries(d,items),`Alteração: ${S.titulo.replace(/\s+/g,' ').trim()} (${editCtx.cat})`);
+}
+async function removeCreation(cat,folder){
+  const d=await readCategory(cat);
+  const target=d.items.find(x=>x.folder===folder);
+  if(!target){const e=new Error('gone');e.code='gone';throw e}
+  setProg(0.6,'A atualizar o site…');
+  await commitEntries(d,compactEntries(d,d.items.filter(x=>x!==target)),`Retirada do site: ${target.title||folder} (${cat})`);
+}
+async function runRemove(cat,folder,title){
+  retryFn=()=>runRemove(cat,folder,title);errBackTo='s-gerir';errZipOk=false;
+  if(navigator.onLine===false){showErr('offline');return}
+  busy=true;show('s-publicando');setProg(0.15,'A tirar do site…');
+  try{
+    let a=0;
+    for(;;){try{await removeCreation(cat,folder);break}catch(e){if((e.status===422||e.status===409)&&a<2){a++;continue}throw e}}
+    setProg(1,'Feito.');busy=false;
+    setDone('Tirada do site',`<strong>${esc(title||'A criação')}</strong> já não aparece em ${esc(catName(cat))}.`,{manage:true,share:false});
+  }catch(e){busy=false;handleOpErr(e)}
+}
+onShow['s-gerir']=()=>{renderGCats();loadManage()};
+function renderGCats(){$('#gCats').innerHTML=CATS.map(c=>`<button class="chip" type="button" data-id="${c.id}" aria-pressed="${c.id===gCat}">${c.nome}</button>`).join('')}
+$('#gCats').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;gCat=b.dataset.id;renderGCats();loadManage()});
+$('#gBack').onclick=()=>{if(S.mode==='edit')resetState();show('s-inicio')};
+$('#gReload').onclick=()=>loadManage();
+$('#manageBtn').onclick=async()=>{if(!configured()){retryFn=publish;errBackTo='s-inicio';errZipOk=false;showErr('config');return}await saveDraft();show('s-gerir')};
+async function loadManage(){
+  const tok=++gTok,L=$('#gList');hideAlert('#gAlert');
+  L.innerHTML='<p class="small">A carregar…</p>';
+  try{
+    const d=await readCategory(gCat);if(tok!==gTok)return;gData=d;
+    if(!d.items.length){L.innerHTML='<p class="small">Ainda não há criações nesta categoria.</p>';return}
+    L.innerHTML=d.items.map((it,i)=>`<div class="gitem"><img alt="" data-thumb="${i}"><div style="min-width:0;flex:1"><div class="gt" data-title="${i}">A carregar…</div><div class="gb"><button class="gbtn edit" type="button" data-edit="${i}">Alterar</button><button class="gbtn sold" type="button" data-sold="${i}">Vendida · tirar</button></div></div></div>`).join('');
+    let k=0;
+    const work=async()=>{
+      while(k<d.items.length){
+        const i=k++,it=d.items[i];if(tok!==gTok)return;
+        try{const inf=it.files.find(f=>f.name==='infos.txt');if(inf){it.text=new TextDecoder().decode(await blobBytes(inf.sha));it.title=titleOf(it.text)}}catch(e){}
+        const te=L.querySelector(`[data-title="${i}"]`);if(te)te.textContent=it.title||'(sem título)';
+        try{const ph=photosOf(it)[0];if(ph){if(!thumbCache[ph.sha])thumbCache[ph.sha]=URL.createObjectURL(new Blob([await blobBytes(ph.sha)],{type:'image/jpeg'}));const im=L.querySelector(`[data-thumb="${i}"]`);if(im)im.src=thumbCache[ph.sha]}}catch(e){}
+      }
+    };
+    await Promise.all([work(),work(),work(),work()]);
+  }catch(e){
+    if(tok!==gTok)return;L.innerHTML='';
+    showAlert('#gAlert',e instanceof TypeError?'Sem internet. Ligue-se e toque em «Atualizar».':e.status===401?'A ligação ao site expirou. Contacte a assistência técnica.':'Não foi possível carregar as criações. Toque em «Atualizar» ou contacte a assistência técnica.');
+  }
+}
+let delIdx=-1;
+$('#gList').addEventListener('click',e=>{
+  const ed=e.target.closest('[data-edit]'),so=e.target.closest('[data-sold]');
+  if(ed)startEdit(+ed.dataset.edit);
+  if(so){
+    delIdx=+so.dataset.sold;const it=gData.items[delIdx];
+    $('#delT').textContent=it.title||'(sem título)';$('#delCat').textContent=catName(gCat);
+    const ph=photosOf(it)[0];$('#delImg').src=(ph&&thumbCache[ph.sha])||'';
+    openSheet('#sheetDel');
+  }
+});
+$('#delGo').onclick=()=>{const it=gData.items[delIdx];closeSheet('#sheetDel');runRemove(gCat,it.folder,it.title)};
+async function startEdit(i){
+  const it=gData.items[i],cat=gCat;
+  busy=true;show('s-publicando');setProg(0.05,'A abrir a criação…');
+  try{
+    if(it.text===undefined){const inf=it.files.find(f=>f.name==='infos.txt');it.text=inf?new TextDecoder().decode(await blobBytes(inf.sha)):''}
+    const phs=photosOf(it),photos=[];
+    for(let j=0;j<phs.length;j++){
+      setProg(0.05+0.85*(j/Math.max(1,phs.length)),'A abrir as fotos…');
+      const bytes=await blobBytes(phs[j].sha);
+      photos.push({id:uid(),blob:new Blob([bytes],{type:'image/jpeg'}),rot:0,square:false,enhance:false,orig:true,sha:phs[j].sha});
+    }
+    const lines=it.text.replace(/^\uFEFF/,'').replace(/\r\n?/g,'\n').split('\n');
+    const ti=lines.findIndex(l=>l.trim());
+    resetState();
+    S.mode='edit';S.cat=cat;S.photos=photos;
+    S.titulo=ti>=0?lines[ti].trim():'';
+    S.descricao=ti>=0?lines.slice(ti+1).join('\n').trim():'';
+    S.precos='';S.step='s-fotos';
+    editCtx={cat,folder:it.folder};
+    fillFields();
+    for(const p of photos){try{await makeThumb(p)}catch(e){}}
+    busy=false;show('s-fotos');
+  }catch(e){
+    busy=false;show('s-gerir');
+    showAlert('#gAlert',e instanceof TypeError?'Sem internet. Ligue-se e tente outra vez.':'Não foi possível abrir esta criação. Tente outra vez.');
+  }
+}
 
 /* ---------- Publicado ---------- */
 $('#againBtn').onclick=()=>show('s-categoria');
+$('#manageAgain').onclick=()=>show('s-gerir');
 $('#homeBtn').onclick=()=>show('s-inicio');
 $('#siteBtn').onclick=()=>{if(cfg.site.trim())window.open(cfg.site.trim(),'_blank','noopener')};
 $('#shareBtn').onclick=async()=>{
