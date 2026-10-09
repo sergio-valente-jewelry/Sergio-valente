@@ -1,6 +1,6 @@
-Lampada selenite
-Lampada de Selenite
-Com base led multi-cores
+selenite espiral
+Lampada de Selenite espiral
+Com base led multicores
 
 40€
 Portes de envio nao incluidos
