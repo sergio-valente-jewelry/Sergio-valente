@@ -893,7 +893,7 @@
 
           if (titleElement && TITLE[lang] && TITLE[lang][category]) {
             const creationWord = {fr:"Création", en:"Creation", es:"Creación", de:"Kreation", pt:"Criação", pl:"Kreacja", nl:"Creatie"}[lang];
-            const stableCreationTitle = TITLE[lang][category] + " — " + creationWord + " " + number;
+            const stableCreationTitle = card.getAttribute("data-sv-custom-title") || (TITLE[lang][category] + " — " + creationWord + " " + number);
             titleElement.textContent = stableCreationTitle;
             /* Ce nom est celui de la création (ex. Création 01).
                Il ne doit jamais être remplacé par le titre de infos.txt. */
@@ -14174,7 +14174,20 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
   }
 
   function parseCreationInfo(text) {
+    /* TITRE LIBRE : une ligne « Título: Colar Lua » donne le nom affiché sur la fiche.
+       La ligne est retirée du texte, le reste du fichier fonctionne comme avant. */
+    let customTitle = "";
+    text = String(text || "").split(/\r?\n/).filter(function(line) {
+      const m = line.match(/^\s*t[ií]tulo\s*[:=]\s*(.+)$/i);
+      if (m && !customTitle) {
+        customTitle = m[1].trim();
+        return false;
+      }
+      return true;
+    }).join("\n");
+
     const info = {
+      titulo: customTitle,
       titre: "",
       presentation: "",
       inspiration: "",
@@ -14608,6 +14621,7 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
     }
 
     const creationName =
+      card.getAttribute("data-sv-custom-title") ||
       info.titre ||
       stableCreationTitle ||
       ((translations[currentLanguage] || translations.fr).creationFallback || "Création Sergio Valente");
@@ -14700,6 +14714,22 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
     const sourceInfo = parseCreationInfo(text);
     sourceInfo.__file = infoFile;
 
+    /* Titre libre de la fiche (ligne « Título: ... » de infos.txt). */
+    function svSetCustomTitle(value) {
+      card.setAttribute("data-sv-custom-title", value);
+      card.setAttribute("data-creation-display-title", value);
+      const customTitleElement = card.querySelector(".creation-title");
+      if (customTitleElement) customTitleElement.textContent = value;
+    }
+    if (sourceInfo.titulo) {
+      /* En attendant la traduction, on montre le texte écrit (portugais). */
+      if (languageAtStart === "pt" || !card.getAttribute("data-sv-custom-title")) {
+        svSetCustomTitle(sourceInfo.titulo);
+      }
+    } else {
+      card.removeAttribute("data-sv-custom-title");
+    }
+
     if (!sourceInfo.titre && !sourceInfo.presentation &&
         !sourceInfo.inspiration && !sourceInfo.matieres &&
         !sourceInfo.details && !sourceInfo.texteLibre) {
@@ -14718,6 +14748,18 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
         currentLanguage !== languageAtStart
       ) {
         return;
+      }
+
+      if (sourceInfo.titulo) {
+        /* Le titre libre est traduit comme le reste de infos.txt (source : portugais). */
+        const translatedTitle = (await translateCreationText(sourceInfo.titulo, "pt", languageAtStart)) || sourceInfo.titulo;
+        if (
+          generationAtStart !== languageGeneration ||
+          currentLanguage !== languageAtStart
+        ) {
+          return;
+        }
+        svSetCustomTitle(translatedTitle.replace(/\s*\n\s*/g, " ").trim());
       }
 
       renderCreationInfo(card, translatedInfo);
@@ -15755,6 +15797,10 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
       function getStableCreationTitle(card) {
         if (!card) return "";
 
+        /* Titre libre écrit par Sergio dans infos.txt (ligne « Título: ... »). */
+        const customTitle = card.getAttribute("data-sv-custom-title");
+        if (customTitle) return customTitle;
+
         const category = card.getAttribute("data-creation-category") || "";
         const number = card.getAttribute("data-creation-number") || "";
         const lang = document.documentElement.getAttribute("lang") || "fr";
@@ -15928,7 +15974,7 @@ body.sv-lightbox-active .collection-card.creation-slot .creation-card-details {
           const category = card.getAttribute('data-creation-category') || '';
           const number = card.getAttribute('data-creation-number') || '';
           const categoryName = (words[lang] || words.fr)[category] || category;
-          const stable = categoryName ? categoryName + ' — ' + creation + ' ' + number : creation + ' ' + number;
+          const stable = card.getAttribute('data-sv-custom-title') || (categoryName ? categoryName + ' — ' + creation + ' ' + number : creation + ' ' + number);
           card.setAttribute('data-creation-display-title', stable);
           if (!document.body.classList.contains('sv-lightbox-active') && title.textContent.trim() === '') {
             title.textContent = stable;
