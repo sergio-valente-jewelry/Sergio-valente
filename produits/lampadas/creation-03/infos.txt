@@ -1,4 +1,4 @@
-Selenite piramide
+Título: Selenite piramide
 Lampada de selenite pirâmide
 Base led multicores
 
